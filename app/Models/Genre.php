@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Genre extends Model
 {
@@ -22,4 +23,11 @@ class Genre extends Model
         'type',
         'description'
     ];
+
+    public $timestamps = false;
+
+    public function books(): HasMany
+    {
+        return $this->hasMany(Book::class);
+    }
 }

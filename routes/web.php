@@ -16,3 +16,23 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+//Route::get('/login', function () {
+//    return view('login');
+//});
+//Route::post('/login', function () {
+//    validator(request()->all(), [
+//        'email' => 'required',
+//        'password' => 'required'
+//    ])->validate();
+//
+//    $auth = \Illuminate\Support\Facades\Auth::attempt([
+//        'email' => request('email'),
+//        'password' => request('password')
+//    ], true);
+//
+//    if($auth) {
+//        return request()->user();
+//    }
+//    return abort(401);
+//});

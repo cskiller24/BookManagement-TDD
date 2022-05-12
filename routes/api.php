@@ -21,3 +21,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/users', function () {
     return \App\Models\User::all();
 });
+
+Route::get('/test', function () {
+//    return \App\Models\User::with('books')->get();
+//    return \App\Models\Book::with('user')->get();
+//    return \App\Models\User::query()->With('favorites')->get();
+//    return \App\Models\User::query()->withCount('favorites')->get();
+//    return \App\Models\Book::with('user')->get();
+//    return \App\Models\Book::with('reviews')->get();
+//    return \App\Models\Book::query()->withCount('favorites')->get();
+//    return \App\Models\Book::query()->with('genre')->get();
+//    return \App\Models\Review::query()->with('book')->get();
+//    return \App\Models\Genre::query()->with('books')->get();
+    return null;
+});

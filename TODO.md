@@ -8,10 +8,11 @@
 - [x] Create Models w/ fillable and cast
 
 ##### Day 3
-- [ ] Add Relationships to models
-- [ ] Create Factories
-- [ ] Create Seeders
-- [ ] Test Factories and Seeders
+- [x] Add Relationships to models
+- [x] Create Factories
+- [x] Create Seeders
+- [x] Test Factories and Seeders
+- [ ] Test for Seeders
 
 ##### Day 4
 - [ ] Setup Laravel Passport / Laravel Sanctum
