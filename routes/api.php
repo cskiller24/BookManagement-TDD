@@ -14,13 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
-Route::get('/users', function () {
-    return \App\Models\User::all();
-});
+Route::get('/users', function (Request $request) {
+    return $request->user();
+})->middleware(['auth:sanctum']);
+
+Route::post('/register', \App\Http\Controllers\Auth\RegisterController::class);
+Route::post('/login', \App\Http\Controllers\Auth\LoginController::class);
 
 Route::get('/test', function () {
 //    return \App\Models\User::with('books')->get();

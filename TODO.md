@@ -12,28 +12,31 @@
 - [x] Create Factories
 - [x] Create Seeders
 - [x] Test Factories and Seeders
-- [ ] Test for Seeders
+- [x] Test for Seeders
 
 ##### Day 4
-- [ ] Setup Laravel Passport / Laravel Sanctum
-- [ ] Add a dummy middleware api endpoint
-- [ ] Add Login and Register Endpoints
-- [ ] Add Register Controller
-- [ ] Add Register Request and Validation
-- [ ] Add Register User
-- [ ] Add test about the register session
-- [ ] Add Login Controller
-- [ ] Add Login Requesat and Validation
-- [ ] Add Login User
-- [ ] Test Login Controller Session
+- [x] Laravel Sanctum
+- [x] Add a dummy middleware api endpoint
+- [x] Add Login and Register Endpoints
+- [x] Add Register Controller
+- [x] Add Register Request and Validation
+- [x] Add Register User
+- [x] Add test about the register session
+- [x] Add Login Controller
+- [x] Add Login Request and Validation
+- [x] Add Login User
+- [x] Test Login Controller Session
 
 ##### Day 5
 - [ ] Add Login Controller
 - [ ] Add Login Requesat and Validation
 - [ ] Add Login User
 - [ ] Test Login Controller Session
+- [ ] Add Email Verification for users
+- [ ] Test email verification
 
 ##### Day 6 - Public endpoints
+- [ ] Add JSON Resources
 - [ ] Add Books endpoint "/api/books"
   - [ ] Paginate Books "/api/books"
   - [ ] Sort Books by Author A - Z `/api/books?sortBy=author`
@@ -44,3 +47,6 @@
 
 ##### Day 7 - Public endpoints 2
 - [ ] Search Books `/api/books/search/{title}`
+- [ ] Create Book endpoint `/api/books`
+  - [ ] Create Validation
+  - [ ] Must by verified
