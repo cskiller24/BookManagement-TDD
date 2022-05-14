@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::get('/users', function (Request $request) {
     return $request->user();
 })->middleware(['auth:sanctum']);
@@ -22,16 +21,6 @@ Route::get('/users', function (Request $request) {
 Route::post('/register', \App\Http\Controllers\Auth\RegisterController::class);
 Route::post('/login', \App\Http\Controllers\Auth\LoginController::class);
 
-Route::get('/test', function () {
-//    return \App\Models\User::with('books')->get();
-//    return \App\Models\Book::with('user')->get();
-//    return \App\Models\User::query()->With('favorites')->get();
-//    return \App\Models\User::query()->withCount('favorites')->get();
-//    return \App\Models\Book::with('user')->get();
-//    return \App\Models\Book::with('reviews')->get();
-//    return \App\Models\Book::query()->withCount('favorites')->get();
-//    return \App\Models\Book::query()->with('genre')->get();
-//    return \App\Models\Review::query()->with('book')->get();
-//    return \App\Models\Genre::query()->with('books')->get();
-    return null;
-});
+Route::apiResource('books', \App\Http\Controllers\BookController::class);
+Route::get('genres', [\App\Http\Controllers\GenreController::class, 'index']);
+Route::get('reviews', [\App\Http\Controllers\ReviewController::class, 'index']);

@@ -26,9 +26,6 @@ class ExampleTest extends TestCase
 
     }
 
-    /**
-     * @test
-     */
     public function itGeneratesFactory()
     {
 
@@ -38,7 +35,5 @@ class ExampleTest extends TestCase
         Book::factory()->create();
 
         $response = $this->get('/api/test');
-
-        $response->dd();
     }
 }

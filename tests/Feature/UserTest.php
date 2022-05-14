@@ -13,11 +13,14 @@ class UserTest extends TestCase
 
     public function test_retrieves_users()
     {
-        User::factory()->count(10)->create();
+        User::factory()->count(9)->create();
+        $user = User::factory()->create();
+
+        $this->actingAs($user);
 
         $response = $this->get('/api/users');
-        $response->assertOk();
-        $response->assertJsonCount(10);
-
+        $response
+            ->assertOk()
+            ->assertJsonPath('name', $user->name);
     }
 }

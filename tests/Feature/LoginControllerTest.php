@@ -15,18 +15,16 @@ class LoginControllerTest extends TestCase
      */
     public function itReturnsValidationErrorRequest(): void
     {
-        User::factory()->count(10)->create();
         User::factory()->create(['email' => 'duplicate@email.com']);
 
-        $response = $this
-            ->withHeaders(['Accept' => 'application/json'])
-            ->post('/api/login', [
-                'email' => 'duplicate2@email.com',
-                'password' => 'password'
-            ]);
+        $response = $this->postJson('/api/login', [
+            'email' => 'duplicate2@example.com',
+            'password' => 'password'
+        ]);
 
-        $response->assertStatus(422);
-        $response->assertJsonStructure(['message', 'errors']);
+        $response
+            ->assertUnprocessable()
+            ->assertJsonStructure(['message', 'errors']);
     }
 
     /**
@@ -34,18 +32,17 @@ class LoginControllerTest extends TestCase
      */
     public function itLogsInUserSuccessfully(): void
     {
-        User::factory()->count(10)->create();
-        User::factory()->create(['email' => 'my_email@example.com']);
+        $user = User::factory()->create(['email' => 'my_email@example.com']);
 
-        $response = $this
-            ->withHeaders(['Accept' => 'application/json'])
-            ->post('/api/login', [
-                'email' => 'my_email@example.com',
-                'password' => 'password'
-            ]);
+        $response = $this->postJson('/api/login', [
+            'email' => 'my_email@example.com',
+            'password' => 'password'
+        ]);
 
-        $response->assertOk();
-        // TO UPDATE \/\/\/\/\/
-        $response->assertJsonStructure(['user', 'token']);
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('data.id', $user->id)
+            ->assertJsonStructure(['token'], $response->json('data'));
     }
 }

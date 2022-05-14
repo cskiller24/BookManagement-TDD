@@ -28,15 +28,14 @@
 - [x] Test Login Controller Session
 
 ##### Day 5
-- [ ] Add Login Controller
-- [ ] Add Login Requesat and Validation
-- [ ] Add Login User
-- [ ] Test Login Controller Session
-- [ ] Add Email Verification for users
-- [ ] Test email verification
+- [x] Add Resources (User, Book, Genre, Review, Login, Register)
+- [x] Modify Resources for LoginController
+- [x] Modify Resources for RegisterController
+- [x] Add routes api
+- [x] Add Controllers
+- [x] Test routes and Controllers api
 
 ##### Day 6 - Public endpoints
-- [ ] Add JSON Resources
 - [ ] Add Books endpoint "/api/books"
   - [ ] Paginate Books "/api/books"
   - [ ] Sort Books by Author A - Z `/api/books?sortBy=author`

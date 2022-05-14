@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use http\Client\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -30,8 +29,9 @@ class RegisterControllerTest extends TestCase
             'password_confirmation' => 'password',
         ]);
 
-        $response->assertStatus(422);
-        $response->assertJsonStructure(['message', 'errors']);
+        $response
+            ->assertStatus(422)
+            ->assertJsonStructure(['message', 'errors']);
     }
 
     /**
@@ -40,7 +40,6 @@ class RegisterControllerTest extends TestCase
     public function itRegistersUserSuccessfully(): void
     {
         User::factory()->count(10)->create();
-
         $response = $this
             ->withHeaders(['Accept' => 'application/json'])
             ->post('/api/register', [
@@ -50,7 +49,6 @@ class RegisterControllerTest extends TestCase
             'password_confirmation' => 'password',
         ]);
 
-        $response->assertStatus(201);
-        $response->assertNoContent(201);
+        $response->assertCreated();
     }
 }
