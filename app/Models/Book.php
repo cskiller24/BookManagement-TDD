@@ -46,4 +46,9 @@ class Book extends Model
     {
         return $this->belongsTo(Genre::class);
     }
+
+//    public function sortByFavorites(): BelongsToMany
+//    {
+//        return $this->favorites()->orderByRaw('COUNT(*) OVER (PARTITION BY favorites.book_id) DESC');
+//    }
 }

@@ -36,16 +36,24 @@
 - [x] Test routes and Controllers api
 
 ##### Day 6 - Public endpoints
-- [ ] Add Books endpoint "/api/books"
-  - [ ] Paginate Books "/api/books"
-  - [ ] Sort Books by Author A - Z `/api/books?sortBy=author`
+- [x] Add Books endpoint "/api/books"
+  - [x] Paginate Books "/api/books"
+  - [x] Sort Books by Title A - Z `/api/books?sortBy=title`
+  - [x] Sort Books by Number of published by author `/api/books?sortBy=author`
   - [ ] Sort Books by Popularity `/api/books?sortBy=popularity`
-  - [ ] Sort by recently added `/api/books?sortBy=recent`
   - [ ] Sort by most reviewed books `/api/books?sortBy=reviews`
+  - [ ] Sort by recently added `/api/books?sortBy=recent`
 - [ ] Test all books endpoint
 
 ##### Day 7 - Public endpoints 2
 - [ ] Search Books `/api/books/search/{title}`
 - [ ] Create Book endpoint `/api/books`
   - [ ] Create Validation
-  - [ ] Must by verified
+  - [ ] Must be verified by email
+  - [ ] Image storage implementation
+- [ ] Test Create Books endpoint
+
+##### Day 8
+- [ ] Apply Relationships on `/api/books` endpoint
+- [ ] Update Resources for `/api/books`
+- [ ] 

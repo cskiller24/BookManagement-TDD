@@ -2,18 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BookResource;
+use App\Models\Book;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): JsonResource
     {
-        return response('index');
+        $books = Book::query()
+            ->when(request('sortBy') == 'author', function ($builder) {
+                $builder->orderByRaw('COUNT(*) OVER (PARTITION BY user_id) DESC');
+            })
+            ->when(request('sortBy') == 'title', function ($builder) {
+                $builder->orderBy('title');
+            })
+            ->when(request('sortBy') == 'popularity', function ($builder) {
+                $builder->with('sortByFavorites');
+            })
+            ->paginate(20);
+
+        return BookResource::collection($books);
     }
 
     /**
