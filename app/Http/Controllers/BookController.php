@@ -7,7 +7,6 @@ use App\Models\Book;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
@@ -24,11 +23,16 @@ class BookController extends Controller
             ->when(request('sortBy') == 'title', function ($builder) {
                 $builder->orderBy('title');
             })
-            ->when(request('sortBy') == 'popularity', function ($builder) {
-                $builder->with('sortByFavorites');
+            ->when(request('sortBy') == 'favorites', function ($builder) {
+                $builder->withCount('favorites')->orderByDesc('favorites_count');
+            })
+            ->when(request('sortBy') == 'reviews', function ($builder) {
+                $builder->withCount('reviews')->orderByDesc('reviews_count');
+            })
+            ->when(request('sortBy') == 'recent', function ($builder) {
+                $builder->latest();
             })
             ->paginate(20);
-
         return BookResource::collection($books);
     }
 

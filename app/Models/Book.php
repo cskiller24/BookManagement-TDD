@@ -40,15 +40,12 @@ class Book extends Model
     public function favorites(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'favorites');
+//            ->withPivot(['user_id', 'book_id'])
+//            ->orderByRaw('COUNT(*) OVER (PARTITION BY book_id) DESC');
     }
 
     public function genre(): BelongsTo
     {
         return $this->belongsTo(Genre::class);
     }
-
-//    public function sortByFavorites(): BelongsToMany
-//    {
-//        return $this->favorites()->orderByRaw('COUNT(*) OVER (PARTITION BY favorites.book_id) DESC');
-//    }
 }

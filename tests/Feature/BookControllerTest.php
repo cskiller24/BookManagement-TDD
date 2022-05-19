@@ -2,11 +2,15 @@
 
 namespace Tests\Feature;
 
+use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Models\Book;
+use App\Models\Review;
 use App\Models\User;
+use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\Void_;
 use Tests\TestCase;
 
 class BookControllerTest extends TestCase
@@ -89,33 +93,65 @@ class BookControllerTest extends TestCase
      * @test
      * @return void
      */
-    public function itSortsBooksByPopularity(): void
+    public function itSortsBooksByFavorites(): void
     {
-        Book::factory()->count(10)->create();
-
-        // Add random favorites
-        $books = Book::query()->inRandomOrder()->get();
-        foreach (User::all() as $user) {
-            $user->favorites()
-                ->attach(
-                    $books->random()->take(rand(1,2))->pluck('id')
-                );
+        $books = Book::factory()->count(10)->create();
+        User::factory()->count(3)->create();
+        foreach (User::query()->inRandomOrder()->get() as $user) {
+            $user->favorites()->attach(
+                $books->random()->take(rand(1,2))->pluck('id')
+            );
         }
-        // Favorite Specific Book
-        $book = Book::query()->inRandomOrder()->first();
-        User::factory()
-            ->count(11)
-            ->create()
-            ->each(function ($user) use ($book) {
-                $user->favorites()->attach($book->id);
-            });
+        $users = User::factory()->count(15)->create();
+        $book = Book::factory()->create();
+        foreach ($users as $user) {
+            $user->favorites()->attach($book->id);
+        }
 
-        $response = $this->get('/api/books?sortBy=popularity');
+        $response = $this->get('/api/books?sortBy=favorites');
 
-        $response->dd();
         $response
             ->assertOk()
             ->assertJsonPath('data.0.id', $book->id);
     }
 
+    /**
+     * @test
+     * @return void
+     */
+    public function itSortsBooksByNumberOfReviews(): void
+    {
+        Review::factory()->count(10)->create();
+        $bookWithoutReview = Book::factory()->create();
+        $book = Book::factory()->create();
+        $book2 = Book::factory()->create();
+        Review::factory()->for($book)->count(11)->create();
+        Review::factory()->for($book2)->count(9)->create();
+
+        $response = $this->get('/api/books?sortBy=reviews');
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('data.0.id', $book->id)
+            ->assertJsonPath('data.1.id', $book2->id)
+            ->assertJsonPath('data.12.id', $bookWithoutReview->id);
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itSortsBookByRecentlyAdded(): void
+    {
+        Book::factory()->count(10)->create();
+        $book1 = Book::factory()->create(['created_at' => now()->addDay()]);
+        $book2 = Book::factory()->create(['created_at' => now()->addHour()]);
+
+        $response = $this->get('/api/books?sortBy=recent');
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('data.0.id', $book1->id)
+            ->assertJsonPath('data.1.id', $book2->id);
+    }
 }
