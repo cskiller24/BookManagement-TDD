@@ -1,89 +1,161 @@
 # TODO
 
-- [x] Create Backend Project
-- [x] Create Database Model
-- [x] Test Project if working
-- [x] Create database at migration
-- [x] Create Models w/ fillable and cast
-- [x] Add Relationships to models
-- [x] Create Factories
-- [x] Create Seeders
-- [x] Test Factories and Seeders
-- [x] Test for Seeders
-- [x] Add Laravel Sanctum
+| Previews   | Examples      | Meaning                                                                                     |
+|------------|---------------|---------------------------------------------------------------------------------------------|
+| Italics    | _Italic Text_ | Refers to namespace of the project                                                          |
+| Bold       | **Bold Text** | Refers to HTTP [Request Methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) |
+| Code Block | `Code Text`   | Refers to URI of the project                                                                |
+
+- [x] Create backend project
+- [x] Create database model
+- [x] Test project if working
+- [x] Create database and migration
+- [x] Create models w/ fillable and cast
+- [x] Add relationships to models
+- [x] Create factories
+- [x] Create seeders
+- [x] Test factories and seeders
+- [x] Test for seeders
+- [x] Add Laravel Sanctum to the project
 - [x] Add a dummy middleware api endpoint
 
 ## Auth Endpoints
 
-- [x] Add Login and Register Endpoints
-- [x] Add Register Controller
-- [x] Add Register Request and Validation
-- [x] Add Register User
-- [x] Add Test to register session
-- [x] Add Login Controller
-- [x] Add Login Request and Validation
-- [x] Add Login User
-- [x] Test Login Controller Session
-- [x] Modify Resources for LoginController
-- [x] Modify Resources for RegisterController
+- [x] Add login and register endpoints
 
-- [x] Add Resources (User, Book, Genre, Review, Login, Register)
+### LoginController
+
+- [x] Add register rontroller
+- [x] Add register request and validation
+- [x] Add register rser
+- [x] Add rest to register session
+
+### RegisterController
+
+- [x] Add login controller
+- [x] Add login request and validation
+- [x] Add login user
+- [x] Test login controller session
+
+### General
+
+- [x] Modify resources for LoginController
+- [x] Modify resources for RegisterController
+- [x] Add resources (User, Book, Genre, Review, Login, Register)
 - [x] Add routes api
-- [x] Add Controllers
-- [x] Test routes and Controllers api
+- [x] Add controllers
+- [x] Test routes and controllers api
 
 ## Books endpoint
 
-- [x] Add Books endpoint `/api/books`
-  - [x] Paginate Books `/api/books`
-  - [x] Sort Books by Title A - Z `/api/books?sortBy=title`
-  - [x] Sort Books by Number of published by author `/api/books?sortBy=author`
-  - [x] Sort Books by Favorites `/api/books?sortBy=favorites`
+### BookController@Index
+
+- [x] Add Books endpoint **GET** `/api/books`
+  - [x] Paginate books `/api/books`
+  - [x] Sort books by title A - Z `/api/books?sortBy=title`
+  - [x] Sort books by number of published by author `/api/books?sortBy=author`
+  - [x] Sort books by favorites `/api/books?sortBy=favorites`
   - [x] Sort by most reviewed books `/api/books?sortBy=reviews`
   - [x] Sort by recently added `/api/books?sortBy=recent`
 - [x] Test all books endpoint
-- [ ] Search Books `/api/books/{id}`
+
+### BookController@Show
+
+- [ ] Search books **GET** `/api/books/{id}`
+
+### BookController@Create
+
+- [ ] Add create book endpoint **POST** `/api/books`
+  - [ ] Create validation
+  - [ ] Must be verified by email
+- [ ] Test create books endpoint
+
+### BookController@Update
+
+- [ ] Add update books endpoint **PUT** `/api/books/{id}`
+  - [ ] Verify the user is the author of the book before updating using policies
+  - [ ] Customize form request validation for update books endpoint _Http/Request/BookRequest_
+- [ ] Add test cases for update books
+
+### BookController@Delete
+
+- [ ] Add delete books endpoint **DELETE** `api/books/{id}`
+  - [ ] Verify the user is the author of the book before deleting
+- [ ] Add test cases for delete books
+
+### BookController@addFavorite
+
+- [ ] Add favorite books endpoint **POST** `api/books/{id}`
+  - [ ] User must not be the author of the book
+  - [ ] Must be authenticated
+- [ ] Add test case for favorite books endpoint
+
+### BookController@deleteFavorite
+
+- [ ] Add delete favorite books endpoint `api/books/{id}`
+  - [ ] Must be authenticated
+- [ ] Add test case for favorite books endpoint
 
 ## Polymorphic Images Endpoint
 
-- [ ] Add Books Images Migration
-- [ ] Add Books Images Model
-- [ ] Add Books Images Factory
-- [ ] Add Books Images Seeder
-- [ ] Add Books Images Cover Feature
-- [ ] Create Book endpoint `/api/books`
-  - [ ] Create Validation
-  - [ ] Must be verified by email
-- [ ] Test Create Books endpoint
-- [ ] Apply Relationships on `/api/books` endpoint
-- [ ] Update Resources for `/api/books`
-- [ ] Create Update Books `/api/books/{id}` endpoint
-  - [ ] Verify the user is the author of the book before deleting
-  - [ ] Customize form request validation for update books endpoint _Http/Request/BookRequest_
-- [ ] Create Test Cases for Update Books
-- [ ] Create Delete Books `api/books/{id}` endpoint
-  - [ ] Verify the user is the author of the book before deleting
-- [ ] Create Test Cases for Delete Books
-- [ ] Books Images
+- [ ] Add polymorphic images Migration
+- [ ] Add polymorphic images Model
+- [ ] Add polymorphic images Factory
+- [ ] Add polymorphic images Seeder
+- [ ] Add polymorphic images Cover Feature  
+
+### ImageController@createBooksImages
+
+- [ ] Add create books images endpoint **POST** `api/books/{id}/images`
+  - [ ] Check if the user is the author of the books before proceeding
   - [ ] Author can add many photos in a book
-  - [ ] Add validation for maximum 3 photos per books
-  - [ ] Book Author can choose a picture as featured photo of a book
-  - [ ] The Book Author can only add one photo as a featured photo
-- [ ] Books Images _continuation_
+  - [ ] Create validation for maximum 3 photos per books
+- [ ] Add test case for Create Books Endpoint
+
+### ImageController@updateBooksImages
+
+- [ ] Add update books images endpoint **PUT** `api/books/{id}/images/{id}`
+  - [ ] Check if the user is the author of the books before proceeding
+  - [ ] Book author can choose a picture as featured photo of a book
+  - [ ] The book buthor can only add one photo as a featured photo
   - [ ] If there is already a featured photo it cannot be processed
-  - [ ] If there is no featured photo the first photo uploded will act as tempporary featured photo
   - [ ] Author can can turn a featured photo to non-featured photo
-  - [ ] Author can only remove non-featured photo
-  - [ ] To delete a photo the author must remove its featured before deleting
-- [ ] Create test case for `Books Images` Endpoint
+- [ ] Add test case for update books images endpoint
+
+### ImageController@deleteBooksImages
+
+- [ ] Add delete books images endpoint **DELETE** `api/books/{id}/images/{id}`
+  - [ ] Check if the user is the author of the books before proceeding
+  - [ ] User cannot delete the image of the image is featured
+- [ ] Add test case for delete books images endpoint
 
 ## Reviews Endpoint
 
-- [ ] Create Display reviews endpoint `api/reviews`
-- [ ] Create reviews endpoint `api/reviews`
-- [ ] Reviews cannot be updated
-  - [ ] User can choose is they will remain anonymous or not
-- [ ] If a user is deleted the reviews will remain anonymous
-- [ ] Create Update reviews endpoint `api/books/{id}`
-  - [ ] User cannot update the star rating of a book
-- [ ] Creaete Delete reviews endpoint `api/book/{id}`
+### ReviewController@index
+
+- [ ] Add display reviews endpoint **GET** `api/books/{id}/reviews`
+- [ ] Add test case for display reviews endpoint
+
+### ReviewController@userIndex
+
+- [ ] If user is authenticated there's an option to get all the user reviews **GET**`api/reviews`
+- [ ] Add test case for user reviews endpoint
+
+### ReviewController@create
+
+- [ ] Add create reviews endpoint **POST** `api/books/{id}/reviews`
+  - [ ] Cannot add a review if the user is the author of the book
+- [ ] Add test case for create reviews endpoint
+
+### ReviewController@update
+
+- [ ] Add update reviews endpoint **PUT** `api/books/{id}/reviews/{id}`
+  - [ ] User cannot update the star of their review
+  - [ ] Check if the review belongs to the user
+- [ ] Add test case for update reviews endpoint
+
+### ReviewController@delete
+
+- [ ] Create delete reviews endpoint **DELETE** `api/books/{id}/reviews/{id}`
+  - [ ] Check if the review belongs to the user
+- [ ] Add test case for delete reviews endpoint
