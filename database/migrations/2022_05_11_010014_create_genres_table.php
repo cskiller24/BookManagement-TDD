@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title')->index();
             $table->string('type');
-            $table->longText('description');
+            $table->longText('description')->nullable();
         });
     }
 

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->index();
             $table->foreignId('genre_id')->index();
-            $table->longText('title');
-            $table->longText('description');
+            $table->longText('title')->index();
+            $table->longText('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
