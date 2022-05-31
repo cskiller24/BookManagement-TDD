@@ -24,7 +24,6 @@ class BookFactory extends Factory
             'genre_id' => Genre::factory(),
             'title' => Str::title($this->faker->sentence()),
             'description' => $this->faker->sentences(3, true),
-            'image' => 'image.png',
         ];
     }
 }

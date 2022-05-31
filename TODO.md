@@ -72,10 +72,10 @@
 
 ### BookController@Update
 
-- [ ] Add update books endpoint **PUT** `/api/books/{id}`
-  - [ ] Verify the user is the author of the book before updating using policies
-  - [ ] Customize form request validation for update books endpoint _Http/Request/BookRequest_
-- [ ] Add test cases for update books
+- [x] Add update books endpoint **PUT** `/api/books/{id}`
+  - [x] Verify the user is the author of the book before updating using policies
+  - [x] Customize form request validation for update books endpoint _Http/Request/BookRequest_
+- [x] Add test cases for update books
 
 ### BookController@Delete
 

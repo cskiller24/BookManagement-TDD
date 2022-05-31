@@ -23,10 +23,19 @@ class BookRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'genre_id' => 'required|exists:genres,id',
-            'title' => 'required|string',
-            'description' => 'sometimes|required|string',
-        ];
+        if ($this->method() == 'POST') {
+            return [
+                'genre_id' => 'required|exists:genres,id',
+                'title' => 'required|string',
+                'description' => 'sometimes|required|string',
+            ];
+        }
+        if ($this->method() == 'PUT') {
+            return [
+                'genre_id' => 'sometimes|required|exists:genres,id',
+                'title' => 'sometimes|required|string',
+                'description' => 'sometimes|required|string',
+            ];
+        }
     }
 }

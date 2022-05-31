@@ -8,6 +8,7 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
@@ -19,7 +20,9 @@ class BookController extends Controller
     {
         $books = Book::query()
             ->when(request('sortBy') == 'author', function ($builder) {
-                $builder->orderByRaw('COUNT(*) OVER (PARTITION BY user_id) DESC');
+                $builder->orderByRaw(
+                    'COUNT(*) OVER (PARTITION BY user_id) DESC'
+                );
             })
             ->when(request('sortBy') == 'title', function ($builder) {
                 $builder->orderBy('title');
@@ -45,7 +48,10 @@ class BookController extends Controller
      */
     public function store(BookRequest $request): JsonResource
     {
-        abort_unless(auth()->user()->tokenCan('office.create'), Response::HTTP_FORBIDDEN);
+        abort_unless(
+            auth()->user()->tokenCan('book.create'),
+            Response::HTTP_FORBIDDEN
+        );
 
         $credentials = $request->validated();
         $credentials['user_id'] = auth()->id();
@@ -58,7 +64,7 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Book $book)
+    public function show(Book $book): JsonResource
     {
         return BookResource::make($book);
     }
@@ -67,12 +73,22 @@ class BookController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Book $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(BookRequest $request, Book $book): JsonResource
     {
-        return response('update');
+        abort_unless(
+            auth()->user()->tokenCan('book.update'),
+            Response::HTTP_FORBIDDEN
+        );
+
+        $this->authorize('update', $book);
+
+        $book->fill($request->validated());
+        $book->save();
+
+        return BookResource::make($book);
     }
 
     /**

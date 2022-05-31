@@ -181,8 +181,9 @@ class BookControllerTest extends TestCase
         $user = User::factory()->create();
         $genre = Genre::factory()->create();
 
+        $this->actingAs($user);
 
-        $response = $this->actingAs($user)->postJson('api/books/', [
+        $response = $this->postJson('api/books/', [
             'user_id' => $user->id,
             'genre_id' => $genre->id,
             'title' => 'Book Title',
@@ -191,5 +192,48 @@ class BookControllerTest extends TestCase
 
         $response
             ->assertCreated();
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itUpdatesBook(): void
+    {
+        $user = User::factory()->create();
+        $genre = Genre::factory()->create();
+        $book = Book::factory()
+            ->for($user)
+            ->create([
+                'title' => 'Title 1',
+                'description' => 'Description 1',
+                'genre_id' => $genre->id
+            ]);
+
+        $this->actingAs($user);
+
+        $response = $this->putJson('api/books/'.$book->id, ['title' => 'title2']);
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('data.title', 'title2')
+            ->assertJsonPath('data.description', 'Description 1');
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itDoesNotUpdateBookIfTheUserIsNotTheAuthor()
+    {
+        $book = Book::factory()->create();
+        $user = User::factory()->create();
+        $book2 = Book::factory()->for($user)->create();
+
+        $this->actingAs($user);
+
+        $response = $this->putJson('api/books/'.$book->id, ['title' => 'New Title']);
+
+        $response->assertForbidden();
     }
 }
