@@ -19,11 +19,12 @@ class LoginController extends Controller
     public function __invoke(LoginRequest $request)
     {
         try {
-            if(Auth::attempt($request->validated())) {
+            if(! Auth::attempt($request->validated())) {
                 return response()->json([
                     'message' => 'Incorrect Email or Password'
                 ], ResponseCodes::HTTP_UNPROCESSABLE_ENTITY);
             }
+
             $user = User::query()->where('email', $request->only('email'))->first();
             Auth::login($user);
 

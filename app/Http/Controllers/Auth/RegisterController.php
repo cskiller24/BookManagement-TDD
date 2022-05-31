@@ -14,7 +14,7 @@ class RegisterController extends Controller
     public function __invoke(RegisterRequest $request)
     {
         $credentials = $request->validated();
-        $credentials['password'] = Hash::make($request['password']);
+        $credentials['password'] = Hash::make($credentials['password']);
         try {
             $user = User::query()->create($credentials);
             return UserResource::make($user);
