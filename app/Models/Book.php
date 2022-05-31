@@ -13,18 +13,27 @@ class Book extends Model
 {
     use HasFactory, SoftDeletes;
 
+    public const ABILITIES = [
+        'book.create',
+        'book.update',
+        'book.delete',
+        'book.images-add',
+        'book.images-delete',
+        'book.images-update'
+    ];
+
     protected $table = 'books';
 
     protected $casts = [
         'title' => 'string',
         'description' => 'string',
-        'image' => 'string'
     ];
 
     protected $fillable = [
         'title',
         'description',
-        'image',
+        'user_id',
+        'genre_id'
     ];
 
     public function user(): BelongsTo

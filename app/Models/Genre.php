@@ -10,6 +10,12 @@ class Genre extends Model
 {
     use HasFactory;
 
+    public const ABILITIES = [
+        'genre.create',
+        'genre.update',
+        'genre.deactivate'
+    ];
+
     protected $table = 'genres';
 
     protected $casts = [

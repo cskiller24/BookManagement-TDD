@@ -10,6 +10,12 @@ class Review extends Model
 {
     use HasFactory;
 
+    public const ABILITIES = [
+        'review.create',
+        'review.update',
+        'review.delete'
+    ];
+
     protected $table = 'reviews';
 
     protected $casts = [
