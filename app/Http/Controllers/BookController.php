@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookRequest;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Response;
 
 class BookController extends Controller
 {
@@ -42,9 +43,13 @@ class BookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BookRequest $request): JsonResource
     {
-        return response('store');
+        abort_unless(auth()->user()->tokenCan('office.create'), Response::HTTP_FORBIDDEN);
+
+        $credentials = $request->validated();
+        $credentials['user_id'] = auth()->id();
+        return BookResource::make(Book::create($credentials));
     }
 
     /**
@@ -53,9 +58,9 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Book $book)
     {
-        return response('show');
+        return BookResource::make($book);
     }
 
     /**

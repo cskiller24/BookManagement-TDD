@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,12 @@ Route::get('/users', function (Request $request) {
 Route::post('/register', \App\Http\Controllers\Auth\RegisterController::class);
 Route::post('/login', \App\Http\Controllers\Auth\LoginController::class);
 
-Route::apiResource('books', \App\Http\Controllers\BookController::class);
+// Book api resource
+Route::get('books', [\App\Http\Controllers\BookController::class, 'index']);
+Route::post('books', [\App\Http\Controllers\BookController::class, 'store'])->middleware(['verified', 'auth:sanctum']);
+Route::get('books/{book}', [\App\Http\Controllers\BookController::class, 'show']);
+Route::put('books/{book}', [\App\Http\Controllers\BookController::class, 'update'])->middleware(['verified', 'auth:sanctum']);
+Route::delete('books/{book}', [\App\Http\Controllers\BookController::class, 'destroy'])->middleware(['verified', 'auth:sanctum']);
+
 Route::get('genres', [\App\Http\Controllers\GenreController::class, 'index']);
 Route::get('reviews', [\App\Http\Controllers\ReviewController::class, 'index']);

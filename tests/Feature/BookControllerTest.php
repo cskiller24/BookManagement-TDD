@@ -4,13 +4,13 @@ namespace Tests\Feature;
 
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Models\Book;
+use App\Models\Genre;
 use App\Models\Review;
 use App\Models\User;
-use Database\Factories\UserFactory;
+use Database\Factories\BookFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\DB;
-use phpDocumentor\Reflection\Types\Void_;
 use Tests\TestCase;
 
 class BookControllerTest extends TestCase
@@ -153,5 +153,43 @@ class BookControllerTest extends TestCase
             ->assertOk()
             ->assertJsonPath('data.0.id', $book1->id)
             ->assertJsonPath('data.1.id', $book2->id);
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itReturnsSingleBook(): void
+    {
+        Book::factory()->count(5)->create();
+
+        $book = Book::factory()->create();
+
+        $response = $this->getJson('api/books/'.$book->id);
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('data.id', $book->id);
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itCreatesBook(): void
+    {
+        $user = User::factory()->create();
+        $genre = Genre::factory()->create();
+
+
+        $response = $this->actingAs($user)->postJson('api/books/', [
+            'user_id' => $user->id,
+            'genre_id' => $genre->id,
+            'title' => 'Book Title',
+            'description' => 'Book Description'
+        ]);
+
+        $response
+            ->assertCreated();
     }
 }
