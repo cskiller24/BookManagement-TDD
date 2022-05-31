@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreignId('genre_id')->index();
             $table->longText('title');
             $table->longText('description');
-            $table->string('image');
             $table->timestamps();
             $table->softDeletes();
         });
