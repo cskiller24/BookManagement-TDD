@@ -27,7 +27,7 @@
 
 - [x] Add register rontroller
 - [x] Add register request and validation
-- [x] Add register rser
+- [x] Add register user
 - [x] Add rest to register session
 
 ### RegisterController
@@ -61,14 +61,14 @@
 
 ### BookController@Show
 
-- [ ] Search books **GET** `/api/books/{id}`
+- [x] Search books **GET** `/api/books/{id}`
 
 ### BookController@Create
 
-- [ ] Add create book endpoint **POST** `/api/books`
-  - [ ] Create validation
-  - [ ] Must be verified by email
-- [ ] Test create books endpoint
+- [x] Add create book endpoint **POST** `/api/books`
+  - [x] Create validation
+  - [x] Must be verified by email
+- [x] Test create books endpoint
 
 ### BookController@Update
 
