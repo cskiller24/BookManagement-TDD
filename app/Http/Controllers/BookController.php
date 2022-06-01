@@ -97,8 +97,17 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Book $book): Response
     {
-        return response('delete');
+        abort_unless(
+            auth()->user()->tokenCan('book.delete'),
+            Response::HTTP_FORBIDDEN
+        );
+
+        $this->authorize('delete', $book);
+
+        $book->delete();
+
+        return response()->noContent();
     }
 }

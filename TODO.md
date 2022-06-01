@@ -79,9 +79,9 @@
 
 ### BookController@Delete
 
-- [ ] Add delete books endpoint **DELETE** `api/books/{id}`
-  - [ ] Verify the user is the author of the book before deleting
-- [ ] Add test cases for delete books
+- [x] Add delete books endpoint **DELETE** `api/books/{id}`
+  - [x] Verify the user is the author of the book before deleting
+- [x] Add test cases for delete books
 
 ### BookController@addFavorite
 

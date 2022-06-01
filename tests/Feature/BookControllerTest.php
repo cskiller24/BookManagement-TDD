@@ -224,15 +224,50 @@ class BookControllerTest extends TestCase
      * @test
      * @return void
      */
-    public function itDoesNotUpdateBookIfTheUserIsNotTheAuthor()
+    public function itDoesNotUpdateBookIfTheUserIsNotTheAuthor(): void
     {
         $book = Book::factory()->create();
         $user = User::factory()->create();
-        $book2 = Book::factory()->for($user)->create();
+        Book::factory()->for($user)->create();
 
         $this->actingAs($user);
 
         $response = $this->putJson('api/books/'.$book->id, ['title' => 'New Title']);
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itDeletesBook(): void
+    {
+        $user = User::factory()->create();
+        $book = Book::factory()->for($user)->create();
+        $book2 = Book::factory()->for($user)->create();
+
+        $this->actingAs($user);
+
+        $response = $this->deleteJson('api/books/'.$book->id);
+
+        $response
+            ->assertNoContent();
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itDoesNotDeleteBookIfTheUserIsNotTheAuthor(): void
+    {
+        $book = Book::factory()->create();
+        $user = User::factory()->create();
+        Book::factory()->for($user)->create();
+
+        $this->actingAs($user);
+
+        $response = $this->deleteJson('api/books/' . $book->id);
 
         $response->assertForbidden();
     }
