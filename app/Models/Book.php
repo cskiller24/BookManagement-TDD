@@ -17,9 +17,11 @@ class Book extends Model
         'book.create',
         'book.update',
         'book.delete',
-        'book.images-add',
+        'book.images-create',
         'book.images-delete',
-        'book.images-update'
+        'book.images-update',
+        'book.favorites-create',
+        'book.favorites-delete'
     ];
 
     protected $table = 'books';

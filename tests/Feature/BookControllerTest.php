@@ -271,4 +271,41 @@ class BookControllerTest extends TestCase
 
         $response->assertForbidden();
     }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itAddsABookToFavorites(): void
+    {
+        Book::factory()->count(5)->create();
+        $book = Book::factory()->create();
+        $user = User::factory()->create();
+
+        $this->actingAs($user);
+
+        $response = $this->postJson("api/books/{$book->id}/favorites");
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('data.id', $book->id);
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function itDeletsABookToFavorites(): void
+    {
+        $book = Book::factory()->create();
+        $user = User::factory()->create();
+        $user->favorites()->attach($book->id);
+
+        $this->actingAs($user);
+
+        $response = $this->deleteJson('api/books/' . $book->id . '/favorites');
+
+        $response
+            ->assertNoContent();
+    }
 }

@@ -28,6 +28,8 @@ Route::post('books', [\App\Http\Controllers\BookController::class, 'store'])->mi
 Route::get('books/{book}', [\App\Http\Controllers\BookController::class, 'show']);
 Route::put('books/{book}', [\App\Http\Controllers\BookController::class, 'update'])->middleware(['verified', 'auth:sanctum']);
 Route::delete('books/{book}', [\App\Http\Controllers\BookController::class, 'destroy'])->middleware(['verified', 'auth:sanctum']);
+Route::post('books/{book}/favorites', [\App\Http\Controllers\BookController::class, 'storeFavorites'])->middleware(['verified', 'auth:sanctum']);
+Route::delete('books/{book}/favorites', [\App\Http\Controllers\BookController::class, 'destroyFavorites'])->middleware(['verified', 'auth:sanctum']);
 
 Route::get('genres', [\App\Http\Controllers\GenreController::class, 'index']);
 Route::get('reviews', [\App\Http\Controllers\ReviewController::class, 'index']);
