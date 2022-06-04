@@ -85,24 +85,24 @@
 
 ### BookController@addFavorite
 
-- [ ] Add favorite books endpoint **POST** `api/books/{id}`
-  - [ ] User must not be the author of the book
-  - [ ] Must be authenticated
-- [ ] Add test case for favorite books endpoint
+- [x] Add favorite books endpoint **POST** `api/books/{id}`
+  - [x] User must not be the author of the book
+  - [x] Must be authenticated
+- [x] Add test case for favorite books endpoint
 
 ### BookController@deleteFavorite
 
-- [ ] Add delete favorite books endpoint `api/books/{id}`
-  - [ ] Must be authenticated
-- [ ] Add test case for favorite books endpoint
+- [x] Add delete favorite books endpoint `api/books/{id}`
+  - [x] Must be authenticated
+- [x] Add test case for favorite books endpoint
 
 ## Polymorphic Images Endpoint
 
-- [ ] Add polymorphic images Migration
-- [ ] Add polymorphic images Model
-- [ ] Add polymorphic images Factory
-- [ ] Add polymorphic images Seeder
-- [ ] Add polymorphic images Cover Feature  
+- [x] Add polymorphic images Migration
+- [x] Add polymorphic images Model
+- [x] Add polymorphic images Factory
+- [x] Add polymorphic images Seeder
+- [x] Add migration book cover feature
 
 ### ImageController@createBooksImages
 
