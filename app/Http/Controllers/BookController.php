@@ -83,7 +83,7 @@ class BookController extends Controller
             Response::HTTP_FORBIDDEN
         );
 
-        $this->authorize('update', $book);
+        $this->authorize('belongsToUser', $book);
 
         $book->fill($request->validated());
         $book->save();
@@ -104,33 +104,9 @@ class BookController extends Controller
             Response::HTTP_FORBIDDEN
         );
 
-        $this->authorize('delete', $book);
+        $this->authorize('belongsToUser', $book);
 
         $book->delete();
-
-        return response()->noContent();
-    }
-
-    public function storeFavorites(Book $book): JsonResource
-    {
-        abort_unless(
-            auth()->user()->tokenCan('book.favorites-create'),
-            Response::HTTP_FORBIDDEN
-        );
-
-        auth()->user()->favorites()->attach($book->id);
-
-        return BookResource::make($book);
-    }
-
-    public function destroyFavorites(Book $book): Response
-    {
-        abort_unless(
-            auth()->user()->tokenCan('book.favorites-delete'),
-            Response::HTTP_FORBIDDEN
-        );
-
-        auth()->user()->favorites()->detach($book->id);
 
         return response()->noContent();
     }

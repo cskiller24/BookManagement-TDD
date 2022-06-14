@@ -7,10 +7,7 @@ use App\Models\Book;
 use App\Models\Genre;
 use App\Models\Review;
 use App\Models\User;
-use Database\Factories\BookFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class BookControllerTest extends TestCase
@@ -272,40 +269,4 @@ class BookControllerTest extends TestCase
         $response->assertForbidden();
     }
 
-    /**
-     * @test
-     * @return void
-     */
-    public function itAddsABookToFavorites(): void
-    {
-        Book::factory()->count(5)->create();
-        $book = Book::factory()->create();
-        $user = User::factory()->create();
-
-        $this->actingAs($user);
-
-        $response = $this->postJson("api/books/{$book->id}/favorites");
-
-        $response
-            ->assertOk()
-            ->assertJsonPath('data.id', $book->id);
-    }
-
-    /**
-     * @test
-     * @return void
-     */
-    public function itDeletsABookToFavorites(): void
-    {
-        $book = Book::factory()->create();
-        $user = User::factory()->create();
-        $user->favorites()->attach($book->id);
-
-        $this->actingAs($user);
-
-        $response = $this->deleteJson('api/books/' . $book->id . '/favorites');
-
-        $response
-            ->assertNoContent();
-    }
 }

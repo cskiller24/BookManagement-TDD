@@ -36,7 +36,8 @@ class Book extends Model
         'title',
         'description',
         'user_id',
-        'genre_id'
+        'genre_id',
+        'featured_image_id'
     ];
 
     public function user(): BelongsTo
@@ -64,6 +65,11 @@ class Book extends Model
     public function images(): MorphMany
     {
         return $this->morphMany(Image::class, 'resource');
+    }
+
+    public function featuredImage(): BelongsTo
+    {
+        return $this->belongsTo(Image::class, 'featured_image_id');
     }
 
 }

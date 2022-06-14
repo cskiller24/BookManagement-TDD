@@ -10,12 +10,7 @@ class BookPolicy
 {
     use HandlesAuthorization;
 
-    public function update(User $user, Book $book): bool
-    {
-        return $user->id == $book->user_id;
-    }
-
-    public function delete(User $user, Book $book): bool
+    public function belongsToUser(User $user, Book $book): bool
     {
         return $user->id == $book->user_id;
     }

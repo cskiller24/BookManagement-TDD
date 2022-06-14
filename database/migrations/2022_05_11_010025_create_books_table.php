@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->index();
             $table->foreignId('genre_id')->index();
+            $table->foreignId('featured_image_id')->index()->nullable();
             $table->longText('title')->index();
             $table->longText('description')->nullable();
             $table->timestamps();

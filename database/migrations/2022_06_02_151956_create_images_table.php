@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->morphs('resource');
             $table->string('path');
-            $table->boolean('is_featured')->default(false);
             $table->timestamps();
         });
     }

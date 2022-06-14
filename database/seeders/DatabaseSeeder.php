@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Models\Image;
 use App\Models\Review;
 use App\Models\User;
+use Database\Factories\BookImageFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -21,7 +22,11 @@ class DatabaseSeeder extends Seeder
         //dump(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'image'));
         // $book = Book::factory()->has(Image::factory())->create();
 
-        Review::factory()->count(50)->create();
+        User::factory()->create([
+            'email' => 'example@example.com',
+        ]);
+
+        Review::factory()->count(3)->create();
 
         $book = Book::query()->inRandomOrder()->get(); //array
 
@@ -32,8 +37,7 @@ class DatabaseSeeder extends Seeder
         }
 
         foreach(Book::all() as $book) {
-            $images = Image::factory()->count(mt_rand(0, 3))->create();
-            $book->images()->saveMany($images);
+            Image::factory()->count(mt_rand(1,3))->publicImage()->book($book)->create();
         }
     }
 }
