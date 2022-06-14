@@ -72,7 +72,7 @@ class BookImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Book $book, Image $image)
+    public function destroy(Book $book, Image $image): Response
     {
         abort_unless(auth()->user()->tokenCan('book.images-delete'), Response::HTTP_FORBIDDEN);
 

@@ -32,8 +32,15 @@ Route::post('books/{book}/favorites', [\App\Http\Controllers\BookFavoriteControl
 Route::delete('books/{book}/favorites', [\App\Http\Controllers\BookFavoriteController::class, 'destroy'])->middleware(['verified', 'auth:sanctum']);
 
 Route::get('genres', [\App\Http\Controllers\GenreController::class, 'index']);
-Route::get('reviews', [\App\Http\Controllers\ReviewController::class, 'index']);
 
-Route::post('books/{book}/images', [\App\Http\Controllers\BookImageController::class, 'store'])->middleware(['auth:sanctum', 'verified']);
-Route::put('books/{book}/images/{image}', [\App\Http\Controllers\BookImageController::class, 'update'])->middleware(['auth:sanctum', 'verified']);
-Route::delete('books/{book}/images/{image}', [\App\Http\Controllers\BookImageController::class, 'destroy'])->middleware(['auth:sanctum', 'verified']);
+Route::post('books/{book}/images', [\App\Http\Controllers\BookImageController::class, 'store'])->middleware(['verified', 'auth:sanctum']);
+Route::put('books/{book}/images/{image}', [\App\Http\Controllers\BookImageController::class, 'update'])->middleware(['verified', 'auth:sanctum']);
+Route::delete('books/{book}/images/{image}', [\App\Http\Controllers\BookImageController::class, 'destroy'])->middleware(['verified', 'auth:sanctum']);
+
+Route::get('books/{book}/reviews', [\App\Http\Controllers\ReviewController::class, 'index'])->middleware(['verified', 'auth:sanctum']);
+Route::post('books/{book}/reviews', [\App\Http\Controllers\ReviewController::class, 'store'])->middleware(['verified', 'auth:sanctum']);
+Route::get('books/{book}/reviews/{review}', [\App\Http\Controllers\ReviewController::class, 'show'])->middleware(['verified', 'auth:sanctum']);
+Route::put('books/{book}/reviews/{review}', [\App\Http\Controllers\ReviewController::class, 'update'])->middleware(['verified', 'auth:sanctum']);
+Route::delete('books/{book}/reviews/{review}', [\App\Http\Controllers\ReviewController::class, 'destroy'])->middleware(['verified', 'auth:sanctum']);
+
+Route::get('reviews', [\App\Http\Controllers\ReviewController::class, 'userIndex'])->middleware(['auth:sanctum', 'verified']);

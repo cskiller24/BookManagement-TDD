@@ -93,7 +93,7 @@ class BookImageControllerTest extends TestCase
     /**
      * @test
      * @return void
-     */
+     */               //WTFFFFFFF is this function name \/\/\/
     public function itDoesNotProcessTheImageIfTheImageIsAldreadyAFeaturedImage(): void
     {
         Storage::fake(Image::STORING_PATH);

@@ -136,29 +136,33 @@
 
 ### ReviewController@index
 
--   [ ] Add display reviews endpoint **GET** `api/books/{id}/reviews`
--   [ ] Add test case for display reviews endpoint
+-   [x] Add display reviews endpoint **GET** `api/books/{id}/reviews`
+-   [x] Add test case for display reviews endpoint
 
 ### ReviewController@userIndex
 
--   [ ] If user is authenticated there's an option to get all the user reviews **GET**`api/reviews`
--   [ ] Add test case for user reviews endpoint
+-   [x] If user is authenticated there's an option to get all the user reviews **GET**`api/reviews`
+-   [x] Add test case for user reviews endpoint
 
 ### ReviewController@create
 
--   [ ] Add create reviews endpoint **POST** `api/books/{id}/reviews`
-    -   [ ] Cannot add a review if the user is the author of the book
--   [ ] Add test case for create reviews endpoint
+-   [x] Add create reviews endpoint **POST** `api/books/{id}/reviews`
+    -   [x] Cannot add a review if the user is the author of the book
+-   [x] Add test case for create reviews endpoint
 
 ### ReviewController@update
 
--   [ ] Add update reviews endpoint **PUT** `api/books/{id}/reviews/{id}`
-    -   [ ] User cannot update the star of their review
-    -   [ ] Check if the review belongs to the user
--   [ ] Add test case for update reviews endpoint
+-   [x] Add update reviews endpoint **PUT** `api/books/{id}/reviews/{id}`
+    -   [x] User cannot update the star of their review
+    -   [x] Check if the review belongs to the user
+-   [x] Add test case for update reviews endpoint
 
 ### ReviewController@delete
 
--   [ ] Create delete reviews endpoint **DELETE** `api/books/{id}/reviews/{id}`
-    -   [ ] Check if the review belongs to the user
--   [ ] Add test case for delete reviews endpoint
+-   [x] Create delete reviews endpoint **DELETE** `api/books/{id}/reviews/{id}`
+    -   [x] Check if the review belongs to the user
+-   [x] Add test case for delete reviews endpoint
+
+## Resources
+
+- [ ] Modify user resource

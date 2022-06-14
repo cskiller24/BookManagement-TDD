@@ -14,4 +14,9 @@ class BookPolicy
     {
         return $user->id == $book->user_id;
     }
+
+    public function doesNotBelongToUser(User $user, Book $book): bool
+    {
+        return $user->id != $book->user_id;
+    }
 }
