@@ -87,14 +87,15 @@ class BookImageControllerTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertJsonPath('data.featured_image_id', $image->id);
+            ->assertJsonPath('data.images.0.id', $image->id);
+        $this->assertDatabaseHas($book, ['featured_image_id' => $image->id]);
     }
 
     /**
      * @test
      * @return void
      */               //WTFFFFFFF is this function name \/\/\/
-    public function itDoesNotProcessTheImageIfTheImageIsAldreadyAFeaturedImage(): void
+    public function itDoesNotProcessTheImageIfTheImageIsAlreadyAFeaturedImage(): void
     {
         Storage::fake(Image::STORING_PATH);
 
@@ -111,7 +112,8 @@ class BookImageControllerTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertJsonPath('data.featured_image_id', $image->id);
+            ->assertJsonPath('data.images.0.id', $image->id);
+        $this->assertDatabaseHas($book, ['featured_image_id' => $image->id]);
 
         $response2 = $this->putJson("api/books/{$book->id}/images/{$image->id}");
 

@@ -2,12 +2,11 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Image;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 
-class BookImageResource extends JsonResource
+class ImageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,8 +17,9 @@ class BookImageResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'path' => Storage::url($this->path),
             $this->merge(Arr::except(parent::toArray($request), [
-                'created_at', 'updated_at'
+                'created_at', 'updated_at', 'resource_type', 'resource_id'
             ]))
         ];
     }

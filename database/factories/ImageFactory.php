@@ -25,7 +25,7 @@ class ImageFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'resource_id' => $this->faker->randomDigit(),
@@ -34,7 +34,7 @@ class ImageFactory extends Factory
         ];
     }
 
-    public function book($book)
+    public function book($book): self
     {
         return $this->state(function (array $attributes) use ($book){
             return [
@@ -44,7 +44,7 @@ class ImageFactory extends Factory
         });
     }
 
-    public function bookTest($book)
+    public function bookTest($book): self
     {
         return $this->state(function (array $attributes) use ($book) {
             return [
@@ -55,7 +55,7 @@ class ImageFactory extends Factory
         });
     }
 
-    public function publicImage()
+    public function publicImage(): self
     {
         return $this->state(function (array $attributes) {
             return [

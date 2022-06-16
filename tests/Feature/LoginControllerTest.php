@@ -24,7 +24,7 @@ class LoginControllerTest extends TestCase
 
         $response
             ->assertUnprocessable()
-            ->assertJsonStructure(['message', 'errors']);
+            ->assertJsonValidationErrors(['email']);
     }
 
     /**
@@ -38,7 +38,6 @@ class LoginControllerTest extends TestCase
             'email' => 'my_email@example.com',
             'password' => 'password'
         ]);
-
 
         $response
             ->assertOk()

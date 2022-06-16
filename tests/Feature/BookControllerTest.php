@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Models\Book;
 use App\Models\Genre;
+use App\Models\Image;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -18,10 +19,18 @@ class BookControllerTest extends TestCase
      */
     public function itReturnsAllBooks()
     {
-        Book::factory()->count(10)->create();
+        $test = null;
+
+        Book::factory()
+            ->count(10)
+            ->create()
+            ->each(function (Book $book) {
+                $images = Image::factory()->book($book)->count(mt_rand(1, 3))->create();
+                $book->update(['featured_image_id' => $images->toArray()[0]['id']]);
+            }
+        );
 
         $response = $this->get('/api/books');
-
 
         $response
             ->assertOk()
@@ -79,11 +88,11 @@ class BookControllerTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertJsonPath('data.0.user_id', $user->id)
-            ->assertJsonPath('data.1.user_id', $user->id)
-            ->assertJsonPath('data.2.user_id', $user->id)
-            ->assertJsonPath('data.3.user_id', $user2->id)
-            ->assertJsonPath('data.4.user_id', $user2->id);
+            ->assertJsonPath('data.0.user.id', $user->id)
+            ->assertJsonPath('data.1.user.id', $user->id)
+            ->assertJsonPath('data.2.user.id', $user->id)
+            ->assertJsonPath('data.3.user.id', $user2->id)
+            ->assertJsonPath('data.4.user.id', $user2->id);
     }
 
     /**

@@ -18,20 +18,18 @@ class RegisterControllerTest extends TestCase
     public function itReturnsFailValidationRequest(): void
     {
         User::factory()->create(['email' => 'user@example.org']);
-        User::factory()->count(10)->create();
 
         $response = $this
-            ->withHeaders(['Accept' => 'application/json'])
-            ->post('/api/register', [
-            'name' => 'My name',
-            'email' => 'user@example.org',
-            'password' => 'password',
-            'password_confirmation' => 'password',
-        ]);
+            ->postJson('/api/register', [
+                'name' => 'My name',
+                'email' => 'user@example.org',
+                'password' => 'password',
+                'password_confirmation' => 'password',
+            ]);
 
         $response
             ->assertStatus(422)
-            ->assertJsonStructure(['message', 'errors']);
+            ->assertJsonValidationErrors(['email']);
     }
 
     /**
@@ -41,13 +39,12 @@ class RegisterControllerTest extends TestCase
     {
         User::factory()->count(10)->create();
         $response = $this
-            ->withHeaders(['Accept' => 'application/json'])
-            ->post('/api/register', [
-            'name' => 'My name',
-            'email' => 'user@example.org',
-            'password' => 'password',
-            'password_confirmation' => 'password',
-        ]);
+            ->postJson('/api/register', [
+                'name' => 'My name',
+                'email' => 'user@example.org',
+                'password' => 'password',
+                'password_confirmation' => 'password',
+            ]);
 
         $response->assertCreated();
     }

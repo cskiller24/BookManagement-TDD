@@ -36,6 +36,8 @@ class BookController extends Controller
             ->when(request('sortBy') == 'recent', function ($builder) {
                 $builder->latest();
             })
+            ->with(['images', 'genre', 'user', 'featuredImage'])
+            ->withCount('favorites')
             ->paginate(20);
         return BookResource::collection($books);
     }

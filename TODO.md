@@ -165,4 +165,7 @@
 
 ## Resources
 
-- [ ] Modify user resource
+- [x] Modify user resource
+- [ ] Modify books resource
+- [ ] Modify images resource
+- [ ] Modify reviews resource
