@@ -57,6 +57,7 @@ class BookController extends Controller
 
         $credentials = $request->validated();
         $credentials['user_id'] = auth()->id();
+
         return BookResource::make(Book::create($credentials));
     }
 
@@ -68,7 +69,7 @@ class BookController extends Controller
      */
     public function show(Book $book): JsonResource
     {
-        return BookResource::make($book);
+        return BookResource::make($book->load(['user', 'images', 'genre', 'featuredImage']));
     }
 
     /**
@@ -90,7 +91,7 @@ class BookController extends Controller
         $book->fill($request->validated());
         $book->save();
 
-        return BookResource::make($book);
+        return BookResource::make($book->load(['user', 'images', 'genre', 'featuredImage']));
     }
 
     /**

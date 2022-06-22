@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BookImageRequest;
 use App\Http\Resources\BookImageResource;
 use App\Http\Resources\BookResource;
+use App\Http\Resources\ImageResource;
 use App\Models\Book;
 use App\Models\Image;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class BookImageController extends Controller
             'path' => $path
         ]);
 
-        return BookImageResource::make($image);
+        return ImageResource::make($image);
     }
 
     /**
@@ -56,6 +57,8 @@ class BookImageController extends Controller
 
         $this->authorize('belongsToUser', $book);
 
+
+
         throw_if(
             $book->featured_image_id == $image->id,
             ValidationException::withMessages(['image' => 'The image is already a featured image'])
@@ -63,7 +66,7 @@ class BookImageController extends Controller
 
         $book->update(['featured_image_id' => $image->id]);
 
-        return BookResource::make($book->load(['images']));
+        return ImageResource::make($image);
     }
 
     /**
@@ -85,7 +88,7 @@ class BookImageController extends Controller
 
         throw_if(
             $book->featured_image_id == $image->id,
-            ValidationException::withMessages(['image' => 'The image is already a featured image'])
+            ValidationException::withMessages(['image' => 'You cannot delete a featured image'])
         );
 
         Storage::delete($image->path);

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Resources\UserResource;
 use App\Models\Book;
 use App\Models\Image;
 use App\Models\User;
@@ -31,8 +32,8 @@ class BookImageControllerTest extends TestCase
             'image' => UploadedFile::fake()->image('test.jpeg')
         ]);
 
-        Storage::assertExists(Image::STORING_PATH.'/'.$response->json('data.path'));
-        $response->assertCreated();
+        $response
+            ->assertCreated();
     }
 
     /**
@@ -81,13 +82,11 @@ class BookImageControllerTest extends TestCase
 
         $image = Image::factory()->bookTest($book)->create();
 
-        $this->assertNotNull($image);
-
         $response = $this->putJson("api/books/{$book->id}/images/{$image->id}");
 
         $response
             ->assertOk()
-            ->assertJsonPath('data.images.0.id', $image->id);
+            ->assertJsonPath('data.id', $image->id);
         $this->assertDatabaseHas($book, ['featured_image_id' => $image->id]);
     }
 
@@ -112,7 +111,7 @@ class BookImageControllerTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertJsonPath('data.images.0.id', $image->id);
+            ->assertJsonPath('data.id', $image->id);
         $this->assertDatabaseHas($book, ['featured_image_id' => $image->id]);
 
         $response2 = $this->putJson("api/books/{$book->id}/images/{$image->id}");
@@ -192,8 +191,31 @@ class BookImageControllerTest extends TestCase
             ->assertJsonValidationErrors(['image' => 'Cannot delete the only image']);
     }
 
+    /**
+     * @test
+     * @return void
+     */
     public function itDoesNotDeleteImageIfTheImageIsFeaturedImage(): void
     {
+        Storage::fake(Image::STORING_PATH);
 
+        $user = User::factory()->create();
+        $book = Book::factory()->for($user)->create();
+        $image = Image::factory()->bookTest($book)->create();
+        Image::factory()->bookTest($book)->create();
+
+        $this->actingAs($user);
+
+        $response = $this->putJson("api/books/{$book->id}/images/$image->id}");
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('data.id', $image->id);
+
+        $response2 = $this->deleteJson("api/books/{$book->id}/images/{$image->id}");
+
+        $response2
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['image' => 'You cannot delete a featured image']);
     }
 }
