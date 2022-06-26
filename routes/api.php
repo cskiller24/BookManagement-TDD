@@ -19,6 +19,9 @@ Route::get('/users', function (Request $request) {
     return $request->user();
 })->middleware(['auth:sanctum']);
 
+Route::get('/email/verify/{id}/{hash}', [\App\Http\Controllers\VerifyEmailController::class, 'verify'])->middleware(['throttle:6,1', 'signed'])->name('verification.verify');
+Route::post('/email/verify/resend', [\App\Http\Controllers\VerifyEmailController::class, 'resend'])->middleware(['auth:sanctum', 'throttle:6,1'])->name('verification.send');
+
 Route::post('/register', \App\Http\Controllers\Auth\RegisterController::class);
 Route::post('/login', \App\Http\Controllers\Auth\LoginController::class);
 
