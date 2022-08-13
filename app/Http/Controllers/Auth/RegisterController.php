@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Book;
-use App\Models\Genre;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response as ResponseCodes;
 
 class RegisterController extends Controller
 {
@@ -22,11 +22,13 @@ class RegisterController extends Controller
         try {
             $user = User::query()->create($credentials);
 
-            $user->token = $user->createToken(now(), array_merge(Review::ABILITIES, Book::ABILITIES))->plainTextToken;
+            $token = $user->createToken(now(), array_merge(Review::ABILITIES, Book::ABILITIES))->plainTextToken;
 
             event(new Registered($user));
 
-            return UserResource::make($user);
+            $cookie = cookie('auth', $token, 60);
+
+            return response()->json(['data' => UserResource::make($user)], ResponseCodes::HTTP_CREATED)->withCookie($cookie);
         } catch (QueryException $queryException) {
             return response()->json([
                 'errors' => [

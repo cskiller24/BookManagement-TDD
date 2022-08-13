@@ -25,6 +25,8 @@ Route::post('/email/verify/resend', [\App\Http\Controllers\VerifyEmailController
 Route::post('/register', \App\Http\Controllers\Auth\RegisterController::class);
 Route::post('/login', \App\Http\Controllers\Auth\LoginController::class);
 
+Route::get("/auth", \App\Http\Controllers\Auth\AuthController::class)->middleware('auth:sanctum');
+
 // Book api resource
 Route::get('books', [\App\Http\Controllers\BookController::class, 'index']);
 Route::post('books', [\App\Http\Controllers\BookController::class, 'store'])->middleware(['verified', 'auth:sanctum']);

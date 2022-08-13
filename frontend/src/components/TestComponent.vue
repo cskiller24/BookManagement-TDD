@@ -1,0 +1,1 @@
+<template>test Component</template>

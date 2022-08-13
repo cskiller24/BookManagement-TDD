@@ -29,11 +29,12 @@ class LoginController extends Controller
             Auth::login($user);
 
             if($user->is_admin) {
-                $user->token = $user->createToken(now(), array_merge(Genre::ABILITIES))->plainTextToken;
+                $token = $user->createToken(now(), array_merge(Genre::ABILITIES))->plainTextToken;
             } else {
-                $user->token = $user->createToken(now(), array_merge(Book::ABILITIES, Review::ABILITIES))->plainTextToken;
+                $token = $user->createToken(now(), array_merge(Book::ABILITIES, Review::ABILITIES))->plainTextToken;
             }
-            return UserResource::make($user);
+            $cookie = cookie('auth', $token, 60);
+            return response()->json(['data' => UserResource::make($user)])->withCookie($cookie);
         } catch (QueryException $queryException) {
             return response()->json([
                 'errors' => [

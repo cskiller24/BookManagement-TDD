@@ -42,6 +42,6 @@ class LoginControllerTest extends TestCase
         $response
             ->assertOk()
             ->assertJsonPath('data.id', $user->id)
-            ->assertJsonStructure(['token'], $response->json('data'));
+            ->assertCookie('auth');
     }
 }

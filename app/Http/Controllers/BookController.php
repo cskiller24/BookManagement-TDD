@@ -40,6 +40,7 @@ class BookController extends Controller
             ->withCount('favorites')
             ->paginate(20);
         return BookResource::collection($books);
+        // TODO PICTURE NG MAHABANG CODE PARA MAANGAS TIGNAN, IN REALITY MESSED UP CODE WITH A LOT OF PERFORMANCE ISSUES
     }
 
     /**

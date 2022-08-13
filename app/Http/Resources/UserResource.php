@@ -18,7 +18,8 @@ class UserResource extends JsonResource
         return [
             $this->merge(Arr::except(parent::toArray($request), [
                 'created_at', 'updated_at', 'email_verified_at'
-            ]))
+            ])),
+            'is_verified' => $this->email_verified_at !== null
         ];
     }
 }
