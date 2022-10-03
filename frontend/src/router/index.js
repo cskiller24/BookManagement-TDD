@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import store from "@/store";
 import MainLayout from "@/layouts/MainLayout.vue";
+import GuestLayout from "@/layouts/GuestLayout.vue";
 const routes = [
   {
     name: "User",
@@ -24,6 +25,10 @@ const routes = [
         component: () => import("@/views/GenresView.vue"),
       },
       {
+        name: "Genres Fiction",
+        path: "/genres/:genre",
+      },
+      {
         name: "MyBooks",
         path: "/my-books",
         component: () => import("@/views/books/MyBooksView.vue"),
@@ -37,6 +42,11 @@ const routes = [
         path: "/books",
         component: () => import("@/views/books/BooksView.vue"),
       },
+      {
+        name: "Book",
+        path: "/book/:id",
+        component: () => import("@/views/books/BookView.vue"),
+      },
     ],
   },
   {
@@ -46,6 +56,7 @@ const routes = [
     meta: {
       requiresGuest: true,
     },
+    component: GuestLayout,
     children: [
       {
         name: "Login",
@@ -87,18 +98,24 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuthentication && store.getters.isLoggedIn) {
+  // Logged in
+  if (to.meta.requiresAuthentication && !store.getters.getIsLoggedIn) {
+    console.log("1: ", store.getters.getIsLoggedIn);
     next({ name: "Login" });
-  } else if (to.meta.requiresGuest && store.getters.isLoggedIn) {
-    console.log("eto??");
-    next({ name: "Home" });
-  } else if (
+  }
+  // Logged in but not verified
+  else if (
     to.meta.requiresAuthentication &&
     to.meta.requiresVerified &&
-    store.getters.isLoggedIn &&
-    !store.getters.isVerified
+    store.getters.getIsLoggedIn &&
+    !store.getters.getIsVerified
   ) {
     next({ name: "EmailVerify" });
+  }
+  // Logged in but requires guest
+  else if (to.meta.requiresGuest && store.getters.getIsLoggedIn) {
+    console.log("3: ", store.getters.getIsLoggedIn);
+    next({ name: "Home" });
   } else {
     next();
   }

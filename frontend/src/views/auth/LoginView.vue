@@ -1,6 +1,5 @@
 <template>
-  <is-loading-component v-if="isLoading" />
-  <div class="h-screen grid place-items-center" v-else>
+  <div class="h-screen grid place-items-center">
     <section class="relative md:w-1/3 sm:w-2/3">
       <div class="flex justify-center items-center">
         <img src="@/assets/logo.svg" alt="logo" class="absolute" />
@@ -69,18 +68,14 @@ import { useRoute } from "vue-router";
 
 import ErrorsComponent from "@/components/ErrorsComponent.vue";
 import IsLoadingComponent from "@/components/isLoadingComponent.vue";
-import router from "@/router";
 
 export default {
-  setup() {
+  async setup() {
     const store = useStore();
     const pageName = useRoute().name;
 
     const email = ref("");
     const password = ref("");
-
-    const isLoading = computed(() => store.getters.getIsLoading);
-    const isLoggedIn = computed(() => store.getters.getIsLoggedIn);
 
     async function login() {
       store.commit("deleteError", { name: pageName });
@@ -91,14 +86,9 @@ export default {
       });
     }
 
-    onMounted(() => {
-      setTitle("Login");
-      if (isLoggedIn.value) {
-        console.log(isLoggedIn.value);
-        router.push({ name: "Home" });
-      }
-    });
-    return { email, password, login, pageName, isLoading };
+    setTitle("Login");
+
+    return { email, password, login, pageName };
   },
   components: { ErrorsComponent, IsLoadingComponent },
 };

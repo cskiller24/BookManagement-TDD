@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Symfony\Component\CssSelector\XPath\Extension\FunctionExtension;
 
 class Book extends Model
 {
@@ -53,8 +54,6 @@ class Book extends Model
     public function favorites(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'favorites');
-//            ->withPivot(['user_id', 'book_id'])
-//            ->orderByRaw('COUNT(*) OVER (PARTITION BY book_id) DESC');
     }
 
     public function genre(): BelongsTo
@@ -70,6 +69,22 @@ class Book extends Model
     public function featuredImage(): BelongsTo
     {
         return $this->belongsTo(Image::class, 'featured_image_id');
+    }
+
+    public function addRecommendation($book)
+    {
+        $genre = $book->genre->id;
+
+        return Book::inRandomOrder()
+            ->where('genre_id', $genre)
+            ->whereNot('id', '=', $book->id)
+            ->with('images')
+            ->first();
+    }
+
+    public function addAverageReview($book)
+    {
+        return $book->reviews()->avg('star');
     }
 
 }

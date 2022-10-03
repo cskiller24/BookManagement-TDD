@@ -6,9 +6,9 @@ use App\Models\Book;
 use App\Models\Image;
 use App\Models\Review;
 use App\Models\User;
-use Database\Factories\BookImageFactory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,25 +19,38 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        //dump(storage_path('app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'image'));
-        // $book = Book::factory()->has(Image::factory())->create();
-
-        User::factory()->create([
-            'email' => 'example@example.com',
+        // create admin
+        DB::table('users')->insert([
+            'name' => 'Admin',
+            'email' => 'admin@bookmanagement.com',
+            'password' => Hash::make('password'),
+            'is_admin' => true,
+            'email_verified_at' => now()
         ]);
+        // add genres
+        $this->call(GenreSeeder::class);
+        // create users
+        // Add books to usere
+        $users = User::factory()
+            ->count(20)
+            ->has(
+                Book::factory()
+                    ->count(rand(1, 5))
+                    ->has(
+                        Review::factory()->count(rand(1,3))
+                        )
+                    ->has(Image::factory())
+                    ->existingGenre()
+            )->create();
+        // Attach images to books
 
-        Review::factory()->count(3)->create();
-
-        $book = Book::query()->inRandomOrder()->get(); //array
-
-        // Attach favorites
-        foreach (User::all() as $user) {
-            $id = $book->random()->take(rand(1,5))->pluck('id');
-            $user->favorites()->attach($id);
-        }
-
-        foreach(Book::all() as $book) {
-            Image::factory()->count(mt_rand(1,3))->publicImage()->book($book)->create();
-        }
+        // Add favorites
+        $books = Book::inRandomOrder()->pluck('id');
+        $books->each(function ($item, $key) use ($users) {
+            DB::table('favorites')->insert([
+                'user_id' => $users->random(1)->pluck('id')->toArray()[0],
+                'book_id' => $item
+            ]);
+        });
     }
 }

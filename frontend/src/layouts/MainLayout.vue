@@ -4,9 +4,16 @@
       <nav-component />
     </header>
     <section id="contents" class="mb-auto container mx-auto">
-      <router-view></router-view>
+      <Suspense>
+        <template #fallback>
+          <is-loading-component />
+        </template>
+        <template #default>
+          <router-view></router-view>
+        </template>
+      </Suspense>
     </section>
-    <footer class="h-auto mt-52">
+    <footer class="h-auto">
       <footer-component />
     </footer>
   </div>
@@ -15,9 +22,10 @@
 <script>
 import NavComponent from "@/components/NavComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
+import IsLoadingComponent from "@/components/IsLoadingComponent.vue";
 
 export default {
   setup() {},
-  components: { NavComponent, FooterComponent },
+  components: { NavComponent, FooterComponent, IsLoadingComponent },
 };
 </script>

@@ -70,7 +70,10 @@ class BookController extends Controller
      */
     public function show(Book $book): JsonResource
     {
-        return BookResource::make($book->load(['user', 'images', 'genre', 'featuredImage']));
+        $book->recommendation = $book->addRecommendation($book);
+        $book->average_review = $book->addAverageReview($book);
+
+        return BookResource::make($book->load(['user', 'images', 'genre', 'featuredImage', 'reviews.user']));
     }
 
     /**
@@ -114,4 +117,13 @@ class BookController extends Controller
 
         return response()->noContent();
     }
+
+    public function test()
+    {
+        $book = Book::query()->first();
+        $book->recommendation = $book->test($book);
+
+        return BookResource::make($book->load(['user', 'images', 'genre', 'featuredImage']));
+    }
+
 }

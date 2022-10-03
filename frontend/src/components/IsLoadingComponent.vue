@@ -21,3 +21,11 @@
     <span class="sr-only">Loading...</span>
   </div>
 </template>
+
+<style scoped>
+.blurred {
+  background-color: black;
+  height: 100vh;
+  backdrop-filter: blur(8px);
+}
+</style>

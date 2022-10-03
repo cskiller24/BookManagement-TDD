@@ -57,8 +57,6 @@ class BookImageController extends Controller
 
         $this->authorize('belongsToUser', $book);
 
-
-
         throw_if(
             $book->featured_image_id == $image->id,
             ValidationException::withMessages(['image' => 'The image is already a featured image'])

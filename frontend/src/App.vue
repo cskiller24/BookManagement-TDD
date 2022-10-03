@@ -1,32 +1,39 @@
 <template>
-  <router-view />
+  <section v-if="isLoading">
+    <is-loading-component />
+  </section>
+  <main v-else>
+    <router-view />
+  </main>
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { axiosClient } from "@/lib/axios";
-
+import IsLoadingComponent from "@/components/isLoadingComponent.vue";
+import { onBeforeMount, ref } from "vue";
+import { default as HTPP_STATUS } from "@/helpers/status";
 export default {
   setup() {
     const store = useStore();
-    onMounted(async () => {
-      store.commit("setIsLoading", true);
+    const isLoading = ref(true);
+    onBeforeMount(async () => {
       await axiosClient
-        .get("/auth")
-        .then((res) => {
-          if (res.status === 200) {
-            store.commit("setUser");
+        .get("auth")
+        .then(({ status, data }) => {
+          if (status === HTPP_STATUS.HTTP_OK) {
+            store.commit("setUser", data.data);
           }
         })
-        .catch((err) => {})
+        .then(() => {})
         .finally(() => {
-          store.commit("setIsLoading", false);
+          isLoading.value = false;
         });
     });
-    const isLoading = ref(true);
-
     return { isLoading };
+  },
+  components: {
+    IsLoadingComponent,
   },
 };
 </script>

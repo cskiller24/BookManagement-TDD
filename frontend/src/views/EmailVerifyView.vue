@@ -7,8 +7,8 @@
     <section class="email-text w-1/3">
       <div class="text-header text-center mb-2">Email Verification Sent</div>
       <p>
-        We have sent an email verification to user@example.com click the link in
-        the email to verify.
+        We have sent an email verification to click the link in the email to
+        verify.
       </p>
       <p>The email will expire in 24 hours.</p>
       <form @submit.prevent method="post" class="mt-2">
@@ -29,12 +29,14 @@
 </template>
 
 <script>
+import { setTitle } from "@/helpers/title";
 import router from "@/router";
 import store from "@/store";
 import { onMounted, ref, watch, computed } from "vue";
 
 export default {
   setup() {
+    setTitle("Email Verify");
     const timer = ref(30);
     const allowSendEmail = ref(false);
 
@@ -66,7 +68,7 @@ export default {
     });
 
     const sendEmail = async () => {
-      await store.dispatch("AUTH_RESEND_EMAIL");
+      // await store.dispatch("AUTH_RESEND_EMAIL");
       timer.value = 0;
     };
 

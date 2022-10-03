@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import ErrorsComponent from "@/components/ErrorsComponent.vue";
@@ -71,32 +71,24 @@ export default {
     const password_confirmation = ref("");
 
     const store = useStore();
-    const router = useRouter();
     const pageName = useRoute().name;
-    const isLoading = computed(() => {
-      store.getters.isLoggedIn;
-    });
-    const isLoggedIn = computed(() => {
-      store.getters.getIsLoggedIn;
-    });
+    const isLoading = ref(false);
 
-    const register = () => {
+    const register = async () => {
+      isLoading.value = true;
       store.commit("deleteError", { name: pageName });
 
-      return store.dispatch("AUTH_REGISTER", {
+      await store.dispatch("AUTH_REGISTER", {
         pageName: pageName,
         name: name.value,
         email: email.value,
         password: password.value,
         password_confirmation: password_confirmation.value,
       });
+
+      isLoading.value = false;
     };
-    onMounted(() => {
-      setTitle("Register");
-      if (isLoggedIn) {
-        router.push({ name: "Home" });
-      }
-    });
+    setTitle("Register");
     return {
       name,
       email,

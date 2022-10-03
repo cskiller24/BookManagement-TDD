@@ -26,4 +26,14 @@ class BookFactory extends Factory
             'description' => $this->faker->sentences(3, true),
         ];
     }
+
+    public function existingGenre()
+    {
+        $totalGenre = Genre::all()->count();
+        return $this->state(function (array $attributes) use ($totalGenre) {
+            return [
+                'genre_id' => rand(1, $totalGenre),
+            ];
+        });
+    }
 }

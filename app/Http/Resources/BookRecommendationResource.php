@@ -2,11 +2,10 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
 
-class ImageResource extends JsonResource
+class BookRecommendationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,13 +16,9 @@ class ImageResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'path' => sprintf('http://%s:%s/storage/images/%s',
-                config('app.test_domain', 'api.book-management.test'),
-                config('app.test_port', 8000),
-                $this->path
-            ),
+            'images' => ImageResource::collection($this->whenLoaded('images')),
             $this->merge(Arr::except(parent::toArray($request), [
-                'created_at', 'updated_at', 'resource_type', 'resource_id'
+                'user_id', 'genre_id', 'featured_image_id', 'created_at', 'updated_at', 'deleted_at',
             ]))
         ];
     }

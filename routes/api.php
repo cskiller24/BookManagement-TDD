@@ -49,3 +49,5 @@ Route::put('books/{book}/reviews/{review}', [\App\Http\Controllers\ReviewControl
 Route::delete('books/{book}/reviews/{review}', [\App\Http\Controllers\ReviewController::class, 'destroy'])->middleware(['verified', 'auth:sanctum']);
 
 Route::get('reviews', [\App\Http\Controllers\ReviewController::class, 'userIndex'])->middleware(['auth:sanctum', 'verified']);
+
+Route::get('/test', [BookController::class, 'test']);

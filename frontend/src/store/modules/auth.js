@@ -12,7 +12,7 @@ export default {
       return state.user !== null;
     },
     getIsVerified: (state) => {
-      return state.user?.is_verified;
+      return state.user.is_verified;
     },
   },
   mutations: {
@@ -22,8 +22,6 @@ export default {
   },
   actions: {
     async AUTH_REGISTER({ commit }, payload) {
-      commit("toggleIsLoading", true);
-
       await axiosClient
         .post("/register", payload)
         .then((res) => {
@@ -40,10 +38,8 @@ export default {
             addErrors(payload.pageName, err.response.data.errors);
           }
         });
-      commit("toggleIsLoading", false);
     },
-    async AUTH_LOGIN({ commit, state }, payload) {
-      commit("setIsLoading", true);
+    async AUTH_LOGIN({ commit }, payload) {
       await axiosClient
         .post("login", { email: payload.email, password: payload.password })
         .then((res) => {
@@ -60,7 +56,6 @@ export default {
             addErrors(payload.pageName, err.response.data.errors);
           }
         });
-      commit("setIsLoading", false);
     },
     async AUTH_RESEND_EMAIL(store, payload) {
       await axiosClient.post("/email/verify/resend").then((res) => {
@@ -70,11 +65,3 @@ export default {
     },
   },
 };
-
-function resolveAfter2Seconds() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve("resolved");
-    }, 2000);
-  });
-}

@@ -27,7 +27,10 @@ class ServeDomainCommand extends Command
      */
     public function handle()
     {
-        $this->call('serve', ['--host' => str_replace(':8000', '', config('app.test_domain', 'api.book-management.test:8000'))]);
+        $this->call('serve', [
+            '--host' => config('app.test_domain', 'api.book-management.test'),
+            '--port' => config('app.test_port', 8000)
+        ]);
         return 0;
     }
 }
