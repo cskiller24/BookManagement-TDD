@@ -7,17 +7,23 @@ use App\Models\Genre;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class GenreController extends Controller
 {
     public function index()
     {
-        return response('genres');
+        return GenreResource::collection(Genre::all()->load('image'));
     }
 
     public function store(Request $request): JsonResource
     {
+        abort_unless(Auth::user()->tokenCan('genre.create'), HttpFoundationResponse::HTTP_FORBIDDEN);
+
         $request->validate([
             'title' => 'required|string',
             'type' => 'required|in:Fiction,Non-Fiction',
@@ -30,19 +36,23 @@ class GenreController extends Controller
 
         $genre = Genre::query()->create($request->only(['title', 'type', 'description']));
 
-        $genre->image()->create(['path' => $path]);
+        $genre->image()->updateOrCreate(['path' => $path]);
 
-        return GenreResource::make($genre);
+        return GenreResource::make($genre->load('image'));
     }
 
     public function update(Genre $genre, Request $request)
     {
+        abort_unless(Auth::user()->tokenCan('genre.update'), HttpFoundationResponse::HTTP_FORBIDDEN);
+
         $request->validate([
             'title' => 'sometimes|string',
             'type' => 'sometimes|in:Fiction,Non-Fiction',
             'description' => 'sometimes|string',
-            'image' => 'mimes:png,jpg,svg'
+            'image' => 'sometimes|image'
         ]);
+
+
 
         if($request->has('title') && $request->title !== null) {
             $genre->title = $request->title;
@@ -57,8 +67,27 @@ class GenreController extends Controller
         }
 
         if($request->hasFile('image')) {
-            Storage::delete($genre->image()->path);
+            Storage::disk('public-images')->delete($genre->image->path);
+
+            $path = $request->file('image')->storePublicly(Image::STORING_PATH);
+            $path = str_replace(Image::STORING_PATH.'/', '', $path);
+
+            $genre->image->update(['path' => $path]);
         }
 
+        $genre->save();
+
+        $genre->refresh();
+
+        return GenreResource::make($genre->load('image'));
+    }
+
+    public function destroy(Genre $genre): Response
+    {
+        Storage::delete($genre->image->path);
+
+        $genre->delete();
+
+        return response()->noContent();
     }
 }

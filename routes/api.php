@@ -37,6 +37,9 @@ Route::post('books/{book}/favorites', [\App\Http\Controllers\BookFavoriteControl
 Route::delete('books/{book}/favorites', [\App\Http\Controllers\BookFavoriteController::class, 'destroy'])->middleware(['verified', 'auth:sanctum']);
 
 Route::get('genres', [\App\Http\Controllers\GenreController::class, 'index']);
+Route::post('genres', [\App\Http\Controllers\GenreController::class, 'store'])->middleware(['verified', 'auth:sanctum']);
+Route::put('genres/{genre}', [\App\Http\Controllers\GenreController::class, 'update'])->middleware(['verified', 'auth:sanctum']);
+Route::delete('genres/{genre}', [\App\Http\Controllers\GenreController::class, 'destroy'])->middleware(['verified', 'auth:sanctum']);
 
 Route::post('books/{book}/images', [\App\Http\Controllers\BookImageController::class, 'store'])->middleware(['verified', 'auth:sanctum']);
 Route::put('books/{book}/images/{image}', [\App\Http\Controllers\BookImageController::class, 'update'])->middleware(['verified', 'auth:sanctum']);

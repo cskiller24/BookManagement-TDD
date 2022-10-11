@@ -63,4 +63,15 @@ class ImageFactory extends Factory
             ];
         });
     }
+
+    public function genreTestWithImage($genre): self
+    {
+        return $this->state(function (array $attributes) use ($genre){
+            return [
+                'resource_id' => $genre->getKey(),
+                'resource_type' => $genre->getMorphClass(),
+                'path' => Storage::fake(Image::STORING_PATH)->put('', UploadedFile::fake()->image('test.png'))
+            ];
+        });
+    }
 }

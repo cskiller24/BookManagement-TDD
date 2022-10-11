@@ -3,17 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BookImageRequest;
-use App\Http\Resources\BookImageResource;
-use App\Http\Resources\BookResource;
 use App\Http\Resources\ImageResource;
 use App\Models\Book;
 use App\Models\Image;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
-use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 
 class BookImageController extends Controller
 {
@@ -89,7 +85,7 @@ class BookImageController extends Controller
             ValidationException::withMessages(['image' => 'You cannot delete a featured image'])
         );
 
-        Storage::delete($image->path);
+        Storage::disk('public-images')->delete($image->path);
 
         $image->delete();
 

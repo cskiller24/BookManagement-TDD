@@ -14,6 +14,9 @@ class GenreResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'image' => ImageResource::make($this->whenLoaded('image')),
+            $this->merge(parent::toArray($request)),
+        ];
     }
 }
