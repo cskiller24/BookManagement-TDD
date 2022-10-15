@@ -43,8 +43,6 @@ export default {
     genre: Object,
   },
 };
-
-function modifyTitle(string) {}
 </script>
 
 <style scoped>

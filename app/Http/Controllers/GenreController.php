@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BookResource;
 use App\Http\Resources\GenreResource;
 use App\Models\Genre;
 use App\Models\Image;
+use App\Models\Book;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
@@ -15,9 +18,27 @@ use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class GenreController extends Controller
 {
-    public function index()
+    public function index(): JsonResource
     {
-        return GenreResource::collection(Genre::all()->load('image'));
+        $genre = Genre::with('image')
+        ->when(request('type') == 'fiction', function(EloquentBuilder $query) {
+            $query->where('type', '=', 'Fiction');
+        })
+        ->when(request('type') == 'non-fiction', function (EloquentBuilder $query) {
+            $query->where('type', '=', 'Non-Fiction');
+        })
+        ->get();
+        return GenreResource::collection(
+            $genre
+        );
+    }
+
+    public function show($id)
+    {
+        $genre = Genre::query()->find($id);
+        $genre->books = Book::query()->where('genre_id', '=', $genre->id)->latest()->with(['images', 'genre', 'user', 'featuredImage'])->get();
+
+        return GenreResource::make($genre);
     }
 
     public function store(Request $request): JsonResource

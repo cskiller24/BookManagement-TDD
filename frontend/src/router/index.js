@@ -26,7 +26,18 @@ const routes = [
       },
       {
         name: "Genres Fiction",
-        path: "/genres/:genre",
+        path: "/genre/fiction",
+        component: () => import("@/views/genres/GenreFictionView.vue"),
+      },
+      {
+        name: "Genres Non-Fiction",
+        path: "/genre/non-fiction",
+        component: () => import("@/views/genres/GenreNonFictionView.vue"),
+      },
+      {
+        name: "Genre",
+        path: "/genre/i/:id",
+        component: () => import("@/views/genres/GenreView.vue"),
       },
       {
         name: "MyBooks",

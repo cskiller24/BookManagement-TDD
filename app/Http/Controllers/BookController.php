@@ -36,11 +36,13 @@ class BookController extends Controller
             ->when(request('sortBy') == 'recent', function ($builder) {
                 $builder->latest();
             })
+            ->when(request('genre'), function ($builder) {
+                $builder->where('genre_id', '=', request('genre'));
+            })
             ->with(['images', 'genre', 'user', 'featuredImage'])
             ->withCount('favorites')
             ->paginate(20);
         return BookResource::collection($books);
-        // TODO PICTURE NG MAHABANG CODE PARA MAANGAS TIGNAN, IN REALITY MESSED UP CODE WITH A LOT OF PERFORMANCE ISSUES
     }
 
     /**

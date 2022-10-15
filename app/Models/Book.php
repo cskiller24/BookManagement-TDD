@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Symfony\Component\CssSelector\XPath\Extension\FunctionExtension;
 
 class Book extends Model
 {
@@ -76,7 +75,7 @@ class Book extends Model
         $genre = $book->genre->id;
 
         return Book::inRandomOrder()
-            ->where('genre_id', $genre)
+            ->where('genre_id', '=', $genre)
             ->whereNot('id', '=', $book->id)
             ->with('images')
             ->first();
