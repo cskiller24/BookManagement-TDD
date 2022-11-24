@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BookRequest;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
@@ -42,6 +40,17 @@ class BookController extends Controller
             ->with(['images', 'genre', 'user', 'featuredImage'])
             ->withCount('favorites')
             ->paginate(20);
+        return BookResource::collection($books);
+    }
+
+    public function indexUser(): JsonResource
+    {
+        $books = Book::query()
+            ->where('user_id', '=', auth()->id())
+            ->with(['images', 'genre', 'user', 'featuredImage'])
+            ->withCount('favorites')
+            ->paginate(20);
+
         return BookResource::collection($books);
     }
 
@@ -122,10 +131,8 @@ class BookController extends Controller
 
     public function test()
     {
-        $book = Book::query()->first();
-        $book->recommendation = $book->test($book);
+        dd(auth()->user());
 
-        return BookResource::make($book->load(['user', 'images', 'genre', 'featuredImage']));
     }
 
 }

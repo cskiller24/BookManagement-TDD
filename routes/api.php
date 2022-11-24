@@ -29,6 +29,7 @@ Route::get("/auth", \App\Http\Controllers\Auth\AuthController::class)->middlewar
 
 // Book api resource
 Route::get('books', [\App\Http\Controllers\BookController::class, 'index']);
+Route::get('books/user',[\App\Http\Controllers\BookController::class, 'indexUser'])->middleware('auth:sanctum');
 Route::post('books', [\App\Http\Controllers\BookController::class, 'store'])->middleware(['verified', 'auth:sanctum']);
 Route::get('books/{book}', [\App\Http\Controllers\BookController::class, 'show']);
 Route::put('books/{book}', [\App\Http\Controllers\BookController::class, 'update'])->middleware(['verified', 'auth:sanctum']);

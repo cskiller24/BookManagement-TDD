@@ -70,7 +70,7 @@ class Book extends Model
         return $this->belongsTo(Image::class, 'featured_image_id');
     }
 
-    public function addRecommendation($book)
+    public function addRecommendation($book): self
     {
         $genre = $book->genre->id;
 

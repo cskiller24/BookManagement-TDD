@@ -11,6 +11,7 @@ use App\Models\Genre;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response as ResponseCodes;
 
@@ -33,7 +34,8 @@ class LoginController extends Controller
             } else {
                 $token = $user->createToken(now(), array_merge(Book::ABILITIES, Review::ABILITIES))->plainTextToken;
             }
-            $cookie = cookie('auth', $token, 60);
+            $user->token = $token;
+            $cookie = cookie('auth', $token, now()->addMonth()->diffInMinutes());
             return response()->json(['data' => UserResource::make($user)])->withCookie($cookie);
         } catch (QueryException $queryException) {
             return response()->json([
