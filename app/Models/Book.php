@@ -70,7 +70,7 @@ class Book extends Model
         return $this->belongsTo(Image::class, 'featured_image_id');
     }
 
-    public function addRecommendation($book): self
+    public function addRecommendation($book): ?self
     {
         $genre = $book->genre->id;
 
@@ -81,7 +81,7 @@ class Book extends Model
             ->first();
     }
 
-    public function addAverageReview($book)
+    public function addAverageReview(Book $book)
     {
         return $book->reviews()->avg('star');
     }

@@ -131,7 +131,6 @@ class BookController extends Controller
 
     public function test()
     {
-        dd(auth()->user());
 
     }
 

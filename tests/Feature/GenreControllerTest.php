@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class GenreControllerTest extends TestCase
@@ -66,24 +67,17 @@ class GenreControllerTest extends TestCase
     public function itUpdatesAGenre(): void
     {
         Storage::fake(Image::STORING_PATH);
-
-        // $user = User::factory()->create(['is_admin' => true]);
-
-        // $this->actingAs($user);
-
+        $this->actAsAdmin();
         $genre = Genre::factory()->create();
 
         Image::factory()->genreTestWithImage($genre)->create();
 
-        $image = UploadedFile::fake()->image('test.png');
         $response = $this->putJson('api/genres/'.$genre->id, [
             'title' => 'New Genre',
         ]);
 
-        $response->dd();
-        // $response->assertJsonPath('data.title', 'New Genre');
-        // $response->assertJsonPath('data.image.path', $this->parsePath($image->hashName()));
-        // $response->assertOk();
+        $response->assertOk();
+        $response->assertJsonPath('data.title', 'New Genre');
     }
 
     /**
@@ -98,13 +92,17 @@ class GenreControllerTest extends TestCase
         $genre = Genre::factory()->create();
 
         Image::factory()->genreTestWithImage($genre);
-
+        $this->actAsAdmin();
+        $image = UploadedFile::fake()->image('test.png');
         $response = $this->putJson('api/genres/'.$genre->id, [
             'title' => 'Genre New',
-            'image' => UploadedFile::fake()->image('test.png')
+            'image' => $image
         ]);
 
-        $response->dd();
+        $response
+            ->assertOk()
+            ->assertJsonPath('data.title', 'Genre New')
+            ->assertJsonPath('data.image.path', $this->parsePath($image->hashName()));
     }
 
     /**
@@ -114,11 +112,7 @@ class GenreControllerTest extends TestCase
     public function itDeletesAGenre(): void
     {
         Storage::fake(Image::STORING_PATH);
-
-        $user = User::factory()->create(['is_admin' => true]);
-
-        $this->actingAs($user);
-
+        $this->actAsAdmin();
         $genre = Genre::factory()->create();
 
         $image = Image::factory()->genreTestWithImage($genre)->create();

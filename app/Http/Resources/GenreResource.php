@@ -16,7 +16,7 @@ class GenreResource extends JsonResource
     {
         return [
             'image' => ImageResource::make($this->whenLoaded('image')),
-            'books' => BookResource::collection($this->when($this->books, $this->books)),
+            'books' => BookResource::collection($this->whenLoaded('books')),
             $this->merge(parent::toArray($request)),
         ];
     }
