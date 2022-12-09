@@ -27,7 +27,7 @@ class BookFactory extends Factory
         ];
     }
 
-    public function existingGenre()
+    public function existingGenre(): self
     {
         $totalGenre = Genre::all()->count();
         return $this->state(function (array $attributes) use ($totalGenre) {

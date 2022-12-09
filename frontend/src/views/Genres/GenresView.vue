@@ -24,13 +24,13 @@ const genres = [
         id: 1,
         name: "Fiction",
         image: "/src/assets/books/fiction.svg",
-        link: "/genre/fiction",
+        link: "/genres/fiction",
     },
     {
         id: 2,
         name: "Non-Fiction",
         image: "/src/assets/books/fiction.svg",
-        link: "/genre/non-fiction",
+        link: "/genres/non-fiction",
     },
 ];
 </script>

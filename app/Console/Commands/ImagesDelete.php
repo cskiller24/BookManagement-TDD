@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Image;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
@@ -32,11 +33,10 @@ final class ImagesDelete extends Command
     {
         if($this->confirm('This will delete all the images. Do you wish to continue?')) {
             $files = array_filter(glob(public_path('storage/images/*')), function ($file) {
-                return false === strpos($file, 'default_image.png');
+                return false === strpos($file, Image::DEFAULT_IMAGE);
             });
 
             $file = new Filesystem();
-
             if ($file->delete($files)) {
                 $this->info('Images Deleted Successfully');
             } else {

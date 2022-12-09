@@ -44,11 +44,13 @@ return [
             'throw' => false,
         ],
 
-        'public-images' => [
+        'public_image' => [
             'driver' => 'local',
             'root' => storage_path('app/public/images'),
-            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
+            'url' => sprintf('http://%s:%s/storage/images',
+                    env('TEST_DOMAIN', 'localhost'),
+                    env('TEST_PORT', 8000)),
             'throw' => false,
         ],
 
@@ -79,8 +81,7 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-        public_path('storage/images') => storage_path('app/public/images'),
-        public_path('testing/book/images') => storage_path('framework/testing/disks/public/images')
+        public_path('public_image') => storage_path('app/public/images'),
     ],
 
 ];

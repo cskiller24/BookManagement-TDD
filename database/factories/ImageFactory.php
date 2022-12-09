@@ -30,7 +30,7 @@ class ImageFactory extends Factory
         return [
             'resource_id' => $this->faker->randomDigit(),
             'resource_type' => Str::random(10),
-            'path' => 'default_image.png'
+            'path' => Image::DEFAULT_IMAGE
         ];
     }
 
@@ -44,13 +44,23 @@ class ImageFactory extends Factory
         });
     }
 
+    public function genre($genre): self
+    {
+        return $this->state(function (array $attributes) use ($genre){
+            return [
+                'resource_id' => $genre->getKey(),
+                'resource_type' => $genre->getMorphClass(),
+            ];
+        });
+    }
+
     public function bookTest($book): self
     {
         return $this->state(function (array $attributes) use ($book) {
             return [
                 'resource_id' => $book->getKey(),
                 'resource_type' => $book->getMorphClass(),
-                'path' => Storage::fake(Image::STORING_PATH)->put('', UploadedFile::fake()->image('test.png')) // TODO
+                'path' => Storage::fake(Image::DISK)->put('', UploadedFile::fake()->image('test.png')) // TODO
             ];
         });
     }
@@ -70,7 +80,7 @@ class ImageFactory extends Factory
             return [
                 'resource_id' => $genre->getKey(),
                 'resource_type' => $genre->getMorphClass(),
-                'path' => Storage::fake(Image::STORING_PATH)->put('', UploadedFile::fake()->image('test.png'))
+                'path' => Storage::fake(Image::DISK)->put('', UploadedFile::fake()->image('test.png'))
             ];
         });
     }

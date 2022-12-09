@@ -29,8 +29,10 @@ abstract class TestCase extends BaseTestCase
     protected function actAsUser(User $user = null)
     {
         $abilities = Book::ABILITIES;
-        if(! $user) {
+        if($user == null) {
             return $this->sanctumCreateUser(User::factory()->create(), $abilities);
         }
+
+        return $this->sanctumCreateUser($user, $abilities);
     }
 }

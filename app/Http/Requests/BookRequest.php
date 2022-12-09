@@ -27,7 +27,8 @@ class BookRequest extends FormRequest
             return [
                 'genre_id' => 'required|exists:genres,id',
                 'title' => 'required|string',
-                'description' => 'sometimes|required|string',
+                'description' => 'required|string',
+                'image' => 'required|mimes:png,jpg,svg'
             ];
         }
         if ($this->method() == 'PUT') {

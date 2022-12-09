@@ -29,14 +29,11 @@ class BookImageController extends Controller
             ValidationException::withMessages(['image' => 'Cannot add more than 3 images in a book'])
         );
 
-        $path = $request->file('image')->storePublicly(Image::STORING_PATH);
-
-        $path = str_replace(Image::STORING_PATH.'/', '', $path);
+        $path = $request->file('image')->store('', Image::DISK);
 
         $image = $book->images()->create([
             'path' => $path
         ]);
-
         return ImageResource::make($image);
     }
 
@@ -85,7 +82,7 @@ class BookImageController extends Controller
             ValidationException::withMessages(['image' => 'You cannot delete a featured image'])
         );
 
-        Storage::disk('public-images')->delete($image->path);
+        Storage::disk(Image::DISK)->delete($image->path);
 
         $image->delete();
 

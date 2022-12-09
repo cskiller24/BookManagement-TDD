@@ -9,6 +9,8 @@ use App\Models\Image;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class BookControllerTest extends TestCase
@@ -184,16 +186,18 @@ class BookControllerTest extends TestCase
      */
     public function itCreatesBook(): void
     {
+        Storage::fake(Image::DISK);
         $user = User::factory()->create();
         $genre = Genre::factory()->create();
 
-        $this->actingAs($user);
+        $this->actAsUser($user);
 
         $response = $this->postJson('api/books/', [
             'user_id' => $user->id,
             'genre_id' => $genre->id,
             'title' => 'Book Title',
-            'description' => 'Book Description'
+            'description' => 'Book Description',
+            'image' => UploadedFile::fake()->image('test.png')
         ]);
 
         $response
@@ -216,7 +220,7 @@ class BookControllerTest extends TestCase
                 'genre_id' => $genre->id
             ]);
 
-        $this->actingAs($user);
+        $this->actAsUser($user);
 
         $response = $this->putJson('api/books/'.$book->id, ['title' => 'title2']);
 
@@ -236,7 +240,7 @@ class BookControllerTest extends TestCase
         $user = User::factory()->create();
         Book::factory()->for($user)->create();
 
-        $this->actingAs($user);
+        $this->actAsUser($user);
 
         $response = $this->putJson('api/books/'.$book->id, ['title' => 'New Title']);
 
@@ -253,7 +257,7 @@ class BookControllerTest extends TestCase
         $book = Book::factory()->for($user)->create();
         $book2 = Book::factory()->for($user)->create();
 
-        $this->actingAs($user);
+        $this->actAsUser($user);
 
         $response = $this->deleteJson('api/books/'.$book->id);
 
@@ -271,7 +275,7 @@ class BookControllerTest extends TestCase
         $user = User::factory()->create();
         Book::factory()->for($user)->create();
 
-        $this->actingAs($user);
+        $this->actAsUser($user);
 
         $response = $this->deleteJson('api/books/' . $book->id);
 

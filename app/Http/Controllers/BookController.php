@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BookRequest;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
+use App\Models\Image;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -70,7 +72,12 @@ class BookController extends Controller
         $credentials = $request->validated();
         $credentials['user_id'] = auth()->id();
 
-        return BookResource::make(Book::create($credentials));
+        // Creating books and image
+        $book = Book::query()->create($credentials);
+        $file = $request->file('image')->store('', Image::DISK);
+        $book->images()->create(['path' => $file]);
+
+        return BookResource::make($book->load('images'));
     }
 
     /**
@@ -124,14 +131,17 @@ class BookController extends Controller
 
         $this->authorize('belongsToUser', $book);
 
+        // Deletes all the images
+        foreach($book->images as $image) {
+            if(! $image->path != Image::DEFAULT_IMAGE) {
+                Storage::disk(Image::DISK)->delete($image->path);
+            }
+        }
+
+        $book->images()->delete();
         $book->delete();
 
         return response()->noContent();
-    }
-
-    public function test()
-    {
-
     }
 
 }

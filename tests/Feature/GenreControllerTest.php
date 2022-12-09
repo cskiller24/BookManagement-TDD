@@ -87,11 +87,11 @@ class GenreControllerTest extends TestCase
      */
     public function itUpdatesAGenreWithImage(): void
     {
-        Storage::fake(Image::STORING_PATH);
+        Storage::fake('public-images-test');
 
         $genre = Genre::factory()->create();
 
-        Image::factory()->genreTestWithImage($genre);
+        Image::factory()->genreTestWithImage($genre)->create();
         $this->actAsAdmin();
         $image = UploadedFile::fake()->image('test.png');
         $response = $this->putJson('api/genres/'.$genre->id, [

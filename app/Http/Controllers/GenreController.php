@@ -86,14 +86,10 @@ class GenreController extends Controller
         }
 
         if($request->hasFile('image')) {
-            if($genre->image != null) {
-                Storage::disk('public-images')->delete($genre->image->path);
-
-            }
+            Storage::disk('public-images')->delete($genre->image->path);
             $path = $request->file('image')->storePublicly(Image::STORING_PATH);
             $path = str_replace(Image::STORING_PATH.'/', '', $path);
-
-            $genre->image()->updateOrCreate(['path' => $path]);
+            $genre->image->update(['path' => $path]);
         }
 
         $genre->save();

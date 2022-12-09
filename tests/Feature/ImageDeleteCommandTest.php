@@ -14,7 +14,7 @@ class ImageDeleteCommandTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @test
+     * This remove all the files in the actual folder but this test passes
      * @return void
      */
     public function itDeletesImagesInFolder(): void

@@ -16,9 +16,14 @@ class Image extends Model
      *
      * @var string
      */
-    const STORING_PATH = 'public/images';
+    const DISK = 'public_image';
 
-
+    /**
+     * Default image file name
+     *
+     * @var string
+     */
+    const DEFAULT_IMAGE = 'default_image.png';
     /**
      * The attributes that should be cast.
      *
