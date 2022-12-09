@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Book;
 use App\Models\Image;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -54,13 +55,15 @@ class ImageFactory extends Factory
         });
     }
 
-    public function bookTest($book): self
+    public function bookTest(Book $book): self
     {
         return $this->state(function (array $attributes) use ($book) {
+            $file = UploadedFile::fake()->image('test.png');
+            Storage::fake(Image::DISK)->put('', $file);
             return [
                 'resource_id' => $book->getKey(),
                 'resource_type' => $book->getMorphClass(),
-                'path' => Storage::fake(Image::DISK)->put('', UploadedFile::fake()->image('test.png')) // TODO
+                'path' => $file->hashName()  // TODO
             ];
         });
     }
@@ -69,18 +72,20 @@ class ImageFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'path' => $this->faker->image(public_path('storage/images'), 640, 480, null, false)
+                'path' => $this->faker->image(public_path('public_images'), 640, 480, null, false)
             ];
         });
     }
 
-    public function genreTestWithImage($genre): self
+    public function genreImage($genre): self
     {
         return $this->state(function (array $attributes) use ($genre){
+            $file = UploadedFile::fake()->image('test.png');
+            Storage::fake(Image::DISK)->put('', $file);
             return [
                 'resource_id' => $genre->getKey(),
                 'resource_type' => $genre->getMorphClass(),
-                'path' => Storage::fake(Image::DISK)->put('', UploadedFile::fake()->image('test.png'))
+                'path' => $file->hashName()
             ];
         });
     }

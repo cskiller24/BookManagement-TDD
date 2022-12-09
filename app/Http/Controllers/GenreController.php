@@ -43,7 +43,7 @@ class GenreController extends Controller
 
     public function store(Request $request): JsonResource
     {
-        abort_unless(Auth::user()->tokenCan('genre.create'), HttpFoundationResponse::HTTP_FORBIDDEN);
+        abort_unless(auth()->user()->tokenCan('genre.create'), HttpFoundationResponse::HTTP_FORBIDDEN);
 
         $request->validate([
             'title' => 'required|string',
@@ -52,8 +52,7 @@ class GenreController extends Controller
             'image' => 'required|mimes:png,jpg,svg'
         ]);
 
-        $path = $request->file('image')->storePublicly(Image::STORING_PATH);
-        $path = str_replace(Image::STORING_PATH.'/', '', $path);
+        $path = $request->file('image')->store('', Image::DISK);
 
         $genre = Genre::query()->create($request->only(['title', 'type', 'description']));
 
@@ -86,9 +85,8 @@ class GenreController extends Controller
         }
 
         if($request->hasFile('image')) {
-            Storage::disk('public-images')->delete($genre->image->path);
-            $path = $request->file('image')->storePublicly(Image::STORING_PATH);
-            $path = str_replace(Image::STORING_PATH.'/', '', $path);
+            Storage::disk(Image::DISK)->delete($genre->image->path);
+            $path = $request->file('image')->store('', Image::DISK);
             $genre->image->update(['path' => $path]);
         }
 
@@ -101,8 +99,8 @@ class GenreController extends Controller
 
     public function destroy(Genre $genre): Response
     {
-        Storage::delete($genre->image->path);
-
+        Storage::disk(Image::DISK)->delete($genre->image->path);
+        $genre->image()->delete();
         $genre->delete();
 
         return response()->noContent();

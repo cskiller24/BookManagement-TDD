@@ -22,11 +22,11 @@ class GenreControllerTest extends TestCase
      */
     public function itDisplaysAllGenres()
     {
-        Storage::fake(Image::STORING_PATH);
+        Storage::fake(Image::DISK);
 
         $genre = Genre::factory()->create();
 
-        Image::factory()->genreTestWithImage($genre)->create();
+        Image::factory()->genreImage($genre)->create();
 
         $response = $this->getJson('api/genres');
         $response->assertJsonPath('data.0.id', $genre->id);
@@ -39,12 +39,9 @@ class GenreControllerTest extends TestCase
      */
     public function itCreatesAGenreWithImage()
     {
+        Storage::fake(IMAGE::DISK);
 
-        Storage::fake(IMAGE::STORING_PATH);
-
-        $user = User::factory()->create(['is_admin' => true]);
-
-        $this->actingAs($user);
+        $this->actAsAdmin();
 
         $image = UploadedFile::fake()->image('test.svg');
 
@@ -56,7 +53,7 @@ class GenreControllerTest extends TestCase
         ]);
 
         $response->assertJsonPath('data.title', 'Genre 1');
-        $response->assertJsonPath('data.image.path', $this->parsePath($image->hashName()));
+        $response->assertJsonPath('data.image.path', image_url($image->hashName()));
         $response->assertCreated();
     }
 
@@ -66,11 +63,11 @@ class GenreControllerTest extends TestCase
      */
     public function itUpdatesAGenre(): void
     {
-        Storage::fake(Image::STORING_PATH);
+        Storage::fake(Image::DISK);
         $this->actAsAdmin();
         $genre = Genre::factory()->create();
 
-        Image::factory()->genreTestWithImage($genre)->create();
+        Image::factory()->genreImage($genre)->create();
 
         $response = $this->putJson('api/genres/'.$genre->id, [
             'title' => 'New Genre',
@@ -87,11 +84,11 @@ class GenreControllerTest extends TestCase
      */
     public function itUpdatesAGenreWithImage(): void
     {
-        Storage::fake('public-images-test');
+        Storage::fake(Image::DISK);
 
         $genre = Genre::factory()->create();
 
-        Image::factory()->genreTestWithImage($genre)->create();
+        Image::factory()->genreImage($genre)->create();
         $this->actAsAdmin();
         $image = UploadedFile::fake()->image('test.png');
         $response = $this->putJson('api/genres/'.$genre->id, [
@@ -102,7 +99,7 @@ class GenreControllerTest extends TestCase
         $response
             ->assertOk()
             ->assertJsonPath('data.title', 'Genre New')
-            ->assertJsonPath('data.image.path', $this->parsePath($image->hashName()));
+            ->assertJsonPath('data.image.path', image_url($image->hashName()));
     }
 
     /**
@@ -111,11 +108,11 @@ class GenreControllerTest extends TestCase
      */
     public function itDeletesAGenre(): void
     {
-        Storage::fake(Image::STORING_PATH);
+        Storage::fake(Image::DISK);
         $this->actAsAdmin();
         $genre = Genre::factory()->create();
 
-        $image = Image::factory()->genreTestWithImage($genre)->create();
+        $image = Image::factory()->genreImage($genre)->create();
 
         $response = $this->deleteJson('api/genres/'.$genre->id);
 

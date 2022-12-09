@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Http\Resources\UserResource;
 use App\Models\Book;
 use App\Models\Image;
 use App\Models\User;
@@ -21,15 +20,16 @@ class BookImageControllerTest extends TestCase
      */
     public function itAddsImageToABook(): void
     {
-        Storage::fake(Image::STORING_PATH);
+        Storage::fake(Image::DISK);
 
         $user = User::factory()->create();
         $book = Book::factory()->for($user)->create();
 
-        $this->actingAs($user);
+        $this->actAsUser($user);
+        $image = UploadedFile::fake()->image('test.jpeg');
 
         $response = $this->postJson("api/books/{$book->id}/images", [
-            'image' => UploadedFile::fake()->image('test.jpeg')
+            'image' => $image
         ]);
 
         $response
@@ -42,12 +42,12 @@ class BookImageControllerTest extends TestCase
      */
     public function itDoesNotAddImageToABookIfImageIsMoreThanThree(): void
     {
-        Storage::fake(Image::STORING_PATH);
+        Storage::fake(Image::DISK);
 
         $user = User::factory()->create();
         $book = Book::factory()->for($user)->create();
 
-        $this->actingAs($user);
+        $this->actAsUser($user);
 
         // Automatically Add 3 images to the specific book
         // for ($i = 0; $i < 3; $i++) {
@@ -73,12 +73,12 @@ class BookImageControllerTest extends TestCase
      */
     public function itUpdatesAnImageToFeaturedImage(): void
     {
-        Storage::fake(Image::STORING_PATH);
+        Storage::fake(Image::DISK);
 
         $user = User::factory()->create();
         $book = Book::factory()->for($user)->create();
 
-        $this->actingAs($user);
+        $this->actAsUser($user);
 
         $image = Image::factory()->bookTest($book)->create();
 
@@ -96,12 +96,12 @@ class BookImageControllerTest extends TestCase
      */               //WTFFFFFFF is this function name \/\/\/
     public function itDoesNotProcessTheImageIfTheImageIsAlreadyAFeaturedImage(): void
     {
-        Storage::fake(Image::STORING_PATH);
+        Storage::fake(Image::DISK);
 
         $user = User::factory()->create();
         $book = Book::factory()->for($user)->create();
 
-        $this->actingAs($user);
+        $this->actAsUser($user);
 
         $image = Image::factory()->bookTest($book)->create();
 
@@ -127,12 +127,12 @@ class BookImageControllerTest extends TestCase
      */
     public function itDeletesAnImageToABook(): void
     {
-        Storage::fake(Image::STORING_PATH);
+        Storage::fake(Image::DISK);
 
         $user = User::factory()->create();
         $book = Book::factory()->for($user)->create();
 
-        $this->actingAs($user);
+        $this->actAsUser($user);
 
         $image = Image::factory()->bookTest($book)->create();
 
@@ -142,7 +142,7 @@ class BookImageControllerTest extends TestCase
 
         $response = $this->deleteJson("api/books/{$book->id}/images/{$image->id}");
 
-        Storage::assertMissing(Image::STORING_PATH.'/'.$image->path);
+        Storage::assertMissing($image->path);
         $response->assertNoContent();
     }
 
@@ -152,7 +152,7 @@ class BookImageControllerTest extends TestCase
      */
     public function itDoesNotDeleteTheImageIfNotBelongToABook(): void
     {
-        Storage::fake(Image::STORING_PATH);
+        Storage::fake(Image::DISK);
 
         $user1 = User::factory()->create();
         $book1 = Book::factory()->for($user1)->create();
@@ -162,7 +162,7 @@ class BookImageControllerTest extends TestCase
         $book2 = Book::factory()->for($user2)->create();
         $imageForUser2 = Image::factory()->bookTest($book2)->create();
 
-        $this->actingAs($user2);
+        $this->actAsUser($user2);
 
         $response = $this->deleteJson("api/books/{$book2->id}/image/{$imageForUser1->id}");
 
@@ -176,13 +176,13 @@ class BookImageControllerTest extends TestCase
      */
     public function itDoesNotDeleteTheImageIfBookHasOneImage(): void
     {
-        Storage::fake(Image::STORING_PATH);
+        Storage::fake(Image::DISK);
 
         $user = User::factory()->create();
         $book = Book::factory()->for($user)->create();
         $image = Image::factory()->bookTest($book)->create();
 
-        $this->actingAs($user);
+        $this->actAsUser($user);
 
         $response = $this->deleteJson("api/books/{$book->id}/images/{$image->id}");
 
@@ -197,14 +197,14 @@ class BookImageControllerTest extends TestCase
      */
     public function itDoesNotDeleteImageIfTheImageIsFeaturedImage(): void
     {
-        Storage::fake(Image::STORING_PATH);
+        Storage::fake(Image::DISK);
 
         $user = User::factory()->create();
         $book = Book::factory()->for($user)->create();
         $image = Image::factory()->bookTest($book)->create();
         Image::factory()->bookTest($book)->create();
 
-        $this->actingAs($user);
+        $this->actAsUser($user);
 
         $response = $this->putJson("api/books/{$book->id}/images/$image->id}");
 

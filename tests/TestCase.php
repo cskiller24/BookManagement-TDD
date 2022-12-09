@@ -20,10 +20,11 @@ abstract class TestCase extends BaseTestCase
 
     protected function actAsAdmin(User $user = null)
     {
-        $abilities = array_merge(Book::ABILITIES, Genre::ABILITIES);
+        $abilities = Genre::ABILITIES;
         if(! $user) {
             return $this->sanctumCreateUser(User::factory()->create(['is_admin' => true]), $abilities);
         }
+        return $this->sanctumCreateUser($user, $abilities);
     }
 
     protected function actAsUser(User $user = null)
