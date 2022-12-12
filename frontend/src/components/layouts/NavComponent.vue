@@ -44,6 +44,7 @@
             <div :class="cardCssDesign">
                 <div v-for="(link, index) in links" :key="index">
                     <link-component
+                        @router-click="toggleResponsiveDropdown"
                         class="ml-2 my-2 w-full"
                         :name="link.title"
                         :redirect-link="link.link"

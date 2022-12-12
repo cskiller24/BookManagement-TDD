@@ -2,6 +2,12 @@ import title from "@/helpers/title";
 import { createRouter, createWebHistory } from "vue-router";
 import NotFound from "@/views/Generic/NotFoundView.vue";
 import HomeLayout from "@/layouts/HomeLayout.vue";
+import GenericView from "@/views/Generic/GenericView.vue";
+import BooksView from "@/views/Books/BooksView.vue";
+import BookView from "@/views/Books/BookView.vue";
+import GenresViewVue from "@/views/Genres/GenresView.vue";
+import GenresTypeViewVue from "@/views/Genres/GenresTypeView.vue";
+import BooksUser from "@/views/Books/BooksUser.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,34 +32,65 @@ const router = createRouter({
         },
         {
             name: "HomeLayout",
-            path: "/home",
-            redirect: "/",
+            path: "/",
             component: HomeLayout,
             children: [
                 {
                     name: "Home",
-                    path: "/",
+                    path: "",
                     component: () => import("@/views/HomepageView.vue"),
                     meta: { title: "Home" },
                 },
                 {
                     name: "About",
-                    path: "/about",
+                    path: "about",
                     component: () => import("@/views/AboutView.vue"),
                     meta: { title: "About" },
                 },
                 {
                     name: "Genres",
-                    path: "/genres",
-                    component: () => import("@/views/Genres/GenresView.vue"),
-                    meta: { title: "Genres" },
+                    path: "genres",
+                    component: GenericView,
+                    children: [
+                        {
+                            // genres
+                            name: "Genres",
+                            path: "",
+                            component: GenresViewVue,
+                            meta: { title: "Genres" },
+                        },
+                        {
+                            // /genres/:type
+                            name: "Genres Type",
+                            path: ":type",
+                            component: GenresTypeViewVue,
+                        },
+                    ],
                 },
                 {
-                    name: "Genres Type",
-                    path: "/genres/:type",
-                    component: () =>
-                        import("@/views/Genres/GenresTypeView.vue"),
-                    meta: { title: "Genres" },
+                    name: "BooksGeneric",
+                    path: "books",
+                    component: GenericView,
+                    children: [
+                        {
+                            name: "Books",
+                            path: "",
+                            component: BooksView,
+                            meta: { title: "Books" },
+                        },
+                        {
+                            name: "Book",
+                            path: ":bookId",
+                            component: BookView,
+                            meta: { title: "Book" },
+                        },
+                        {
+                            name: "BooksUser",
+                            path: "user",
+                            component: BooksUser,
+                            meta: { title: "My Books" },
+                        },
+                    ],
                 },
             ],
         },

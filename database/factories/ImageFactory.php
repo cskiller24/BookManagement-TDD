@@ -68,14 +68,14 @@ class ImageFactory extends Factory
         });
     }
 
-    public function publicImage(): self
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'path' => $this->faker->image(public_path('public_images'), 640, 480, null, false)
-            ];
-        });
-    }
+    // public function publicImage(): self
+    // {
+    //     return $this->state(function (array $attributes) {
+    //         return [
+    //             'path' => $this->faker->image(public_path('storage'), 640, 480, null, false)
+    //         ];
+    //     });
+    // }
 
     public function genreImage($genre): self
     {
