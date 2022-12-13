@@ -31,6 +31,7 @@
                     :redirect-link="`/books/${getBook.recommendation?.id}`"
                 />
             </div>
+            <p>There's no book recommendation</p>
         </div>
         <!-- Reviews -->
         <div class="col-span-3 md:mt-0 mt-4">
