@@ -3,7 +3,7 @@
         <div class="flex justify-between" id="books-nav">
             <p class="text-subHeader">Listed books ({{ userBook.length }})</p>
             <link-component
-                class="bg-black py-1 px-4 text-lg rounded-md border-black border text-white hover:bg-white hover:text-black"
+                class="bg-black py-1 sm:px-4 px-1 text-lg text-center rounded-md border-black border text-white hover:bg-white hover:text-black"
                 redirect-link="/books/create"
                 :is-named-link="false"
                 name="Add a book"

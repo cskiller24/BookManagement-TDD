@@ -15,5 +15,5 @@ export interface IBook {
     featured_image: IImage;
     images: Array<IImage>;
     reviews: Array<IReviews>;
-    recommendation: IRecommendation;
+    recommendation?: IRecommendation;
 }

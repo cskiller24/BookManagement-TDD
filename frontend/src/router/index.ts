@@ -3,11 +3,13 @@ import { createRouter, createWebHistory } from "vue-router";
 import NotFound from "@/views/Generic/NotFoundView.vue";
 import HomeLayout from "@/layouts/HomeLayout.vue";
 import GenericView from "@/views/Generic/GenericView.vue";
-import BooksView from "@/views/Books/BooksView.vue";
-import BookView from "@/views/Books/BookView.vue";
-import GenresViewVue from "@/views/Genres/GenresView.vue";
-import GenresTypeViewVue from "@/views/Genres/GenresTypeView.vue";
-import BooksUser from "@/views/Books/BooksUser.vue";
+import { GenresTypeView, GenresView } from "@/views/Genres";
+import {
+    BooksCreateView,
+    BooksUserView,
+    BookView,
+    BooksView,
+} from "@/views/Books";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,14 +58,14 @@ const router = createRouter({
                             // genres
                             name: "Genres",
                             path: "",
-                            component: GenresViewVue,
+                            component: GenresView,
                             meta: { title: "Genres" },
                         },
                         {
                             // /genres/:type
                             name: "Genres Type",
                             path: ":type",
-                            component: GenresTypeViewVue,
+                            component: GenresTypeView,
                         },
                     ],
                 },
@@ -85,10 +87,16 @@ const router = createRouter({
                             meta: { title: "Book" },
                         },
                         {
-                            name: "BooksUser",
+                            name: "Books User",
                             path: "user",
-                            component: BooksUser,
+                            component: BooksUserView,
                             meta: { title: "My Books" },
+                        },
+                        {
+                            name: "Books Create",
+                            path: "create",
+                            component: BooksCreateView,
+                            meta: { title: "Create book" },
                         },
                     ],
                 },

@@ -27,11 +27,13 @@
                 <link-component
                     :is-named-link="false"
                     class="border-2 border-black p-2 rounded-md"
-                    :name="getBook.recommendation?.title"
+                    :name="getBook.recommendation?.title ?? ''"
                     :redirect-link="`/books/${getBook.recommendation?.id}`"
                 />
             </div>
-            <p>There's no book recommendation</p>
+            <p v-show="!hasBookRecommendation">
+                There's no book recommendation
+            </p>
         </div>
         <!-- Reviews -->
         <div class="col-span-3 md:mt-0 mt-4">
@@ -80,6 +82,9 @@ const route = useRoute();
 const bookId = parseInt(route.params.bookId[0]);
 
 const getBook = ref<IBook>(book);
+const hasBookRecommendation = computed<boolean>(
+    () => getBook.value.recommendation != null
+);
 
 const slides: Array<IImage> = [
     {
