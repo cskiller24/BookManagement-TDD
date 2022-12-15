@@ -4,12 +4,17 @@ import NotFound from "@/views/Generic/NotFoundView.vue";
 import HomeLayout from "@/layouts/HomeLayout.vue";
 import GenericView from "@/views/Generic/GenericView.vue";
 import { GenresTypeView, GenresView } from "@/views/Genres";
+
 import {
     BooksCreateView,
     BooksUserView,
     BookView,
     BooksView,
+    BooksEditView,
+    BookImageEditView,
 } from "@/views/Books";
+import HomepageView from "@/views/HomepageView.vue";
+import AboutView from "@/views/AboutView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,13 +45,13 @@ const router = createRouter({
                 {
                     name: "Home",
                     path: "",
-                    component: () => import("@/views/HomepageView.vue"),
+                    component: HomepageView,
                     meta: { title: "Home" },
                 },
                 {
                     name: "About",
                     path: "about",
-                    component: () => import("@/views/AboutView.vue"),
+                    component: AboutView,
                     meta: { title: "About" },
                 },
                 {
@@ -97,6 +102,16 @@ const router = createRouter({
                             path: "create",
                             component: BooksCreateView,
                             meta: { title: "Create book" },
+                        },
+                        {
+                            name: "Book Edit",
+                            path: ":bookId/edit",
+                            component: BooksEditView,
+                        },
+                        {
+                            name: "Book Images Edit",
+                            path: ":bookId/images",
+                            component: BookImageEditView,
                         },
                     ],
                 },

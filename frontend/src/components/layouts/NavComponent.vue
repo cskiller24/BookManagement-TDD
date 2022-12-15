@@ -21,14 +21,17 @@
             </div>
             <div class="self-center flex justify-end">
                 <div class="md:block hidden">
-                    <link-component
-                        v-if="!isLoggedIn"
-                        class-style="text-input"
-                        :is-named-link="false"
-                        name="Login"
-                        redirect-link="/login"
-                    />
-                    <dropdown-component v-else />
+                    <div v-if="!isLoggedIn">
+                        <link-component
+                            v-for="(links, index) in guestLinks"
+                            :key="index"
+                            class-style="text-input"
+                            :is-named-link="false"
+                            :name="links.title"
+                            :redirect-link="links.link"
+                        />
+                    </div>
+                    <dropdown-component v-if="isLoggedIn" />
                 </div>
                 <div class="block md:hidden" @click="toggleResponsiveDropdown">
                     <img
@@ -66,38 +69,33 @@
     </nav>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import LinkComponent from "@/components/generic/LinkComponent.vue";
 import DropdownComponent from "@/components/layouts/DropdownComponent.vue";
-export default {
-    data() {
-        return {
-            links: [
-                { title: "About", link: "/about" },
-                { title: "Books", link: "/books" },
-                { title: "Genres", link: "/genres" },
-                { title: "My Books", link: "/books/user" },
-            ],
-            guestLinks: [
-                { title: "Login", link: "/login" },
-                { title: "Register", link: "/register" },
-            ],
-            isLoggedIn: true,
-            responsiveDropdown: false,
-        };
-    },
-    methods: {
-        toggleResponsiveDropdown() {
-            this.responsiveDropdown = !this.responsiveDropdown;
-        },
-    },
-    computed: {
-        cardCssDesign(): String {
-            return this.responsiveDropdown
-                ? "border-2 border-black p-2 mt-3 rounded md:hidden mx-3"
-                : "hidden ";
-        },
-    },
-    components: { LinkComponent, DropdownComponent },
+import { ref, computed } from "vue";
+
+const links = [
+    { title: "About", link: "/about" },
+    { title: "Books", link: "/books" },
+    { title: "Genres", link: "/genres" },
+    { title: "My Books", link: "/books/user" },
+];
+
+const guestLinks = [
+    { title: "Login", link: "/login" },
+    { title: "Register", link: "/register" },
+];
+
+const isLoggedIn = ref<boolean>(true);
+const responsiveDropdown = ref<boolean>(false);
+
+const toggleResponsiveDropdown = () => {
+    responsiveDropdown.value = !responsiveDropdown.value;
 };
+
+const cardCssDesign = computed<string>(() =>
+    responsiveDropdown.value
+        ? "border-2 border-black p-2 mt-3 rounded md:hidden mx-3"
+        : "hidden "
+);
 </script>

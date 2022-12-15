@@ -1,35 +1,4 @@
 <template>
-    <!-- <section class="flex justify-center">
-        <div
-            class="border-2 border-black rounded-md p-2 w-11/12 mx-auto lg:w-3/5 md:mx-0"
-        >
-            <h2 class="text-subHeader text-center">Add book</h2>
-            <form
-                method="post"
-                class="grid grid-cols-1 gap-2"
-                enctype="multipart/form-data"
-            >
-                <div>
-                    <label for="name">Name</label>
-                    <input
-                        type="text"
-                        name="name"
-                        id="name"
-                        class="w-full border border-black rounded px-2 py-1 focus:outline-black focus:border-black"
-                        required
-                    />
-                </div>
-                <div>
-                    <label for="description">Description</label>
-                    <textarea
-                        class="w-full border-black border rounded p-1"
-                        rows="6"
-                    ></textarea>
-                </div>
-            </form>
-        </div>
-    </section> -->
-
     <form
         class="grid lg:grid-cols-4 grid-cols-1 gap-4"
         method="post"
@@ -80,6 +49,9 @@
                     @change="previewImage"
                 />
             </div>
+            <genre-dropdown-component
+                @selected-value="(genre) => (genreId = genre)"
+            />
             <input
                 type="submit"
                 value="Submit"
@@ -90,6 +62,7 @@
 </template>
 <script lang="ts" setup>
 import { ref } from "vue";
+import GenreDropdownComponent from "@/components/genres/GenreDropdownComponent.vue";
 const path = ref(
     "http://api.book-management.test:8000/storage/images/default_image.png"
 );
@@ -98,6 +71,8 @@ const previewImage = (e: Event) => {
     const file = e.target?.files[0];
     path.value = URL.createObjectURL(file);
 };
+
+const genreId = ref<number>();
 </script>
 
 <style scoped>

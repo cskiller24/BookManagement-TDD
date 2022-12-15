@@ -32,20 +32,14 @@
     </footer>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import LinkComponent from "@/components/generic/LinkComponent.vue";
-export default {
-    data() {
-        return {
-            homelink: { name: "BookEx", link: "/" },
-            mediaLinks: [{ name: "Media", link: "/" }],
-            refLinks: [
-                { name: "Most reviewed", link: "/books?sortBy=reviews" },
-                { name: "Top Books", link: "/books?sortBy=favorites" },
-                { name: "About", link: "/about" },
-            ],
-        };
-    },
-    components: { LinkComponent },
-};
+import { ref } from "vue";
+
+const mediaLinks = ref([{ name: "Media", link: "/" }]);
+const refLinks = [
+    { name: "Most reviewed", link: "/books?sortBy=reviews" },
+    { name: "Top Books", link: "/books?sortBy=favorites" },
+    { name: "About", link: "/about" },
+];
 </script>

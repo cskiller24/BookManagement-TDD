@@ -12,13 +12,7 @@
     </main>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import NavComponent from "@/components/layouts/NavComponent.vue";
 import FooterComponent from "@/components/layouts/FooterComponent.vue";
-export default {
-    data() {
-        return {};
-    },
-    components: { NavComponent, FooterComponent },
-};
 </script>

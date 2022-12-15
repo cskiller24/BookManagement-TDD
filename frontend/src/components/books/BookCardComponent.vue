@@ -18,7 +18,7 @@
                 :is-named-link="false"
                 :name="link.name"
                 :redirect-link="link.link"
-                class="bg-black text-white rounded-sm py-1 px-2 border border-black text-lg text-center w-full max-w-sm hover:bg-white hover:text-black"
+                class="bg-black whitespace-nowrap text-white rounded-sm py-1 px-2 border border-black text-lg text-center w-full max-w-sm hover:bg-white hover:text-black"
             />
         </div>
     </section>
@@ -33,11 +33,16 @@ const props = defineProps<{ book: IBooks; index: number }>();
 const editLinks = [
     {
         id: 1,
+        name: "Add Image",
+        link: `/books/${props.book.id}/images`,
+    },
+    {
+        id: 2,
         name: "Edit",
         link: `/books/${props.book.id}/edit`,
     },
     {
-        id: 2,
+        id: 3,
         name: "Delete",
         link: `/books/${props.book.id}/delete`,
     },

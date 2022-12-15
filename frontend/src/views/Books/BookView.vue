@@ -69,7 +69,7 @@ import books from "@/tests/books";
 import CarouselComponent from "@/components/books/CarouselComponent.vue";
 import BookReviewComponent from "@/components/books/BookReviewComponent.vue";
 import LinkComponent from "@/components/generic/LinkComponent.vue";
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount, computed } from "vue";
 import { useRoute } from "vue-router";
 import type { IImage } from "@/types/IImage";
 import type { IBook } from "@/types/IBook";
