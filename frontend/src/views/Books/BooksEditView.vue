@@ -1,6 +1,6 @@
 <template>
     <section
-        class="flex flex-col justify-center border-2 border-black p-2 rounded-lg"
+        class="flex flex-col border-2 border-black p-2 rounded-lg mx-auto md:w-1/2 sm:2/3"
     >
         <h2 class="text-subHeader text-center">Edit a book</h2>
         <form method="post" class="space-y-2">

@@ -1,15 +1,16 @@
 <template>
     <nav class="container mx-auto my-4">
         <div class="flex justify-between items-center">
-            <router-link :to="{ name: 'Home' }">
+            <a href="/">
                 <section class="flex items-center" id="logo">
                     <img src="@/assets/logo.svg" class="w-auto h-12 pr-1" />
                     <h1 class="text-header center">BookEx</h1>
                 </section>
-            </router-link>
+            </a>
             <div
                 class="hidden md:flex justify-evenly items-center space-x-12 self-center whitespace-nowrap"
             >
+                <a href="/about"> About </a>
                 <link-component
                     class="px-4 py-3"
                     v-for="(link, index) in links"
@@ -75,7 +76,6 @@ import DropdownComponent from "@/components/layouts/DropdownComponent.vue";
 import { ref, computed } from "vue";
 
 const links = [
-    { title: "About", link: "/about" },
     { title: "Books", link: "/books" },
     { title: "Genres", link: "/genres" },
     { title: "My Books", link: "/books/user" },
