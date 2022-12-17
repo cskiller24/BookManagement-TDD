@@ -15,6 +15,8 @@ import {
 } from "@/views/Books";
 import HomepageView from "@/views/HomepageView.vue";
 import AboutView from "@/views/AboutView.vue";
+import UserView from "@/views/UserView.vue";
+import BookAddReview from "@/views/Books/BookAddReview.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -53,6 +55,12 @@ const router = createRouter({
                     path: "about",
                     component: AboutView,
                     meta: { title: "About" },
+                },
+                {
+                    name: "Profile",
+                    path: "user",
+                    component: UserView,
+                    meta: { title: "User" },
                 },
                 {
                     name: "Genres",
@@ -112,6 +120,11 @@ const router = createRouter({
                             name: "Book Images Edit",
                             path: ":bookId/images",
                             component: BookImageEditView,
+                        },
+                        {
+                            name: "Book Add Review",
+                            path: ":bookId/reviews/add",
+                            component: BookAddReview,
                         },
                     ],
                 },

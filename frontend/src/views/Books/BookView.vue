@@ -44,7 +44,7 @@
                         class="sm:mr-3"
                         :is-named-link="false"
                         name="Add a review"
-                        :redirect-link="`/books/get/${getBook.id}/reviews/add`"
+                        :redirect-link="`/books/${getBook.id}/reviews/add`"
                     />
                     <link-component
                         :is-named-link="false"
